@@ -15,7 +15,7 @@
     <header>
         <div class="header-content">
             <div class="logo-title-container">
-                <img src="logo-shinyweb.png" alt="ShinyWeb Logo" class="header-logo">
+                <img src="models/logo-shinyweb.png" alt="ShinyWeb Logo" class="header-logo">
                 <h1>ShinyWeb</h1>
             </div>
             <div class="search-wrapper">
@@ -232,6 +232,7 @@
                 product.model,
                 function(gltf) {
                     const model = gltf.scene;
+                    model.scale.set(2, 2, 2);
                     
                     // PRESERVAR MATERIALES Y TEXTURAS
                     model.traverse((child) => {
@@ -377,6 +378,7 @@
                 product.model,
                 function(gltf) {
                     const model = gltf.scene;
+                    model.scale.set(3, 3, 3);
                     
                     // PRESERVAR MATERIALES Y TEXTURAS
                     model.traverse((child) => {
