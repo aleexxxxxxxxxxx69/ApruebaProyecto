@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Joieria Online</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <link rel="stylesheet" href="estiloo.css">
 </head>
 <body>
@@ -109,7 +110,7 @@
                 category: "anells",
                 price: 2500,
                 description: "Anell d'or blanc amb diamant natural de 0.5 quilats. Disseny clàssic i elegant.",
-                model: "models/anell-diamant.glb"  //  POSA AQUÍ LA RUTA DEL TEU MODEL DE BLENDER
+                model: "models/pendientes1.glb"  // 👈 TU ARCHIVO 3D
             },
             {
                 id: 2,
@@ -117,7 +118,7 @@
                 category: "anells",
                 price: 1800,
                 description: "Anell amb safir blau autèntic envoltat de diamants petits. Estil vintage.",
-                model: "models/anell-safir.glb"  //  POSA AQUÍ LA RUTA DEL TEU MODEL DE BLENDER
+                model: "models/anell-safir.glb"  // 👈 CUANDO TENGAS EL ARCHIVO, CAMBIA AQUÍ
             },
             {
                 id: 3,
@@ -125,7 +126,7 @@
                 category: "arracades",
                 price: 3200,
                 description: "Arracades de penjoll amb diamants naturals. Perfectes per ocasions especials.",
-                model: "models/arracades-diamant.glb"  //  POSA AQUÍ LA RUTA DEL TEU MODEL DE BLENDER
+                model: "models/arracades-diamant.glb"  // 👈 CUANDO TENGAS EL ARCHIVO, CAMBIA AQUÍ
             },
             {
                 id: 4,
@@ -133,7 +134,7 @@
                 category: "arracades",
                 price: 1500,
                 description: "Arracades amb perles cultivades d'aigua dolça. Elegància atemporal.",
-                model: "models/arracades-perla.glb"  //  POSA AQUÍ LA RUTA DEL TEU MODEL DE BLENDER
+                model: "models/arracades-perla.glb"  // 👈 CUANDO TENGAS EL ARCHIVO, CAMBIA AQUÍ
             },
             {
                 id: 5,
@@ -141,7 +142,7 @@
                 category: "polseres",
                 price: 4500,
                 description: "Polsera Tennis amb diamants de talla brillant. Luxe incomparable.",
-                model: "models/polsera-tennis.glb"  //  POSA AQUÍ LA RUTA DEL TEU MODEL DE BLENDER
+                model: "models/polsera-tennis.glb"  // 👈 CUANDO TENGAS EL ARCHIVO, CAMBIA AQUÍ
             },
             {
                 id: 6,
@@ -149,7 +150,7 @@
                 category: "polseres",
                 price: 980,
                 description: "Polsera d'or de 18 quilats amb charms personalitzables. Estil modern.",
-                model: "models/polsera-charm.glb"  //  POSA AQUÍ LA RUTA DEL TEU MODEL DE BLENDER
+                model: "models/polsera-charm.glb"  // 👈 CUANDO TENGAS EL ARCHIVO, CAMBIA AQUÍ
             }
         ];
 
@@ -188,24 +189,14 @@
             const light2 = new THREE.AmbientLight(0xffffff, 0.6);
             scene.add(light2);
 
-            // ============================================================
-            //  SECCIÓ PER CARREGAR ELS TEUS MODELS 3D DE BLENDER
-            // ============================================================
-            // QUAN TINGUIS ELS ARXIUS .GLB DE BLENDER:
-            // 1. Crea una carpeta "models/" al mateix directori del HTML
-            // 2. Exporta els teus models de Blender com a .glb
-            // 3. Puja'ls a la carpeta "models/"
-            // 4. Descomenta el codi següent i comenta la geometria temporal
-            
-            /*
-            // CARREGAR MODEL GLB DE BLENDER
+            // CARREGAR MODEL GLB
             const loader = new THREE.GLTFLoader();
             loader.load(
-                product.model,  // Ruta del teu model
+                product.model,
                 function(gltf) {
                     const model = gltf.scene;
                     
-                    // Ajusta la mida del model (prova amb diferents valors)
+                    // Ajusta la mida del model
                     model.scale.set(1.5, 1.5, 1.5);
                     
                     // Centra el model
@@ -226,40 +217,32 @@
                 undefined,
                 function(error) {
                     console.error('Error carregant model:', error);
+                    // Mostrar esfera si hay error
+                    const geometry = new THREE.SphereGeometry(1, 32, 32);
+                    const material = new THREE.MeshStandardMaterial({ 
+                        color: 0xD4C5A9,
+                        metalness: 0.7,
+                        roughness: 0.3
+                    });
+                    const fallbackModel = new THREE.Mesh(geometry, material);
+                    scene.add(fallbackModel);
+                    
+                    function animate() {
+                        requestAnimationFrame(animate);
+                        fallbackModel.rotation.y += 0.005;
+                        renderer.render(scene, camera);
+                    }
+                    animate();
                 }
             );
-            */
-            
-            // ============================================================
-            // GEOMETRIA TEMPORAL (ELIMINA AIXÒ QUAN TINGUIS ELS MODELS)
-            // ============================================================
-            const geometry = new THREE.SphereGeometry(1, 32, 32);
-            const material = new THREE.MeshStandardMaterial({ 
-                color: 0xD4C5A9,
-                metalness: 0.7,
-                roughness: 0.3
-            });
-            const model = new THREE.Mesh(geometry, material);
-            scene.add(model);
-
-            // Animació temporal
-            function animate() {
-                requestAnimationFrame(animate);
-                model.rotation.y += 0.005;
-                renderer.render(scene, camera);
-            }
-            animate();
-            // ============================================================
         }
 
         // ============= CREAR VISOR 3D INTERACTIU (MODAL) =============
         function create3DInteractiveViewer(productId, container) {
-            // Netejar contenidor
             container.innerHTML = '';
             
             const product = products.find(p => p.id === productId);
             
-            // Crear escena Three.js
             const scene = new THREE.Scene();
             scene.background = new THREE.Color(0xFFFBF7);
 
@@ -275,7 +258,6 @@
             renderer.setSize(container.clientWidth, container.clientHeight);
             container.appendChild(renderer.domElement);
 
-            // Llums millors per visualització
             const light1 = new THREE.DirectionalLight(0xffffff, 1.2);
             light1.position.set(8, 8, 8);
             scene.add(light1);
@@ -287,14 +269,7 @@
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
             scene.add(ambientLight);
 
-            // ============================================================
-            // SECCIÓ PER CARREGAR MODEL 3D INTERACTIU DE BLENDER
-            // ============================================================
-            // Aquest és el visor principal que apareix al fer click
-            // Mateix procés que abans però amb millor control
-            
-            /*
-            // CARREGAR MODEL GLB DE BLENDER (INTERACTIU)
+            // CARREGAR MODEL GLB (INTERACTIU)
             const loader = new THREE.GLTFLoader();
             loader.load(
                 product.model,
@@ -340,6 +315,10 @@
                         isDragging = false;
                     });
                     
+                    renderer.domElement.addEventListener('mouseleave', () => {
+                        isDragging = false;
+                    });
+                    
                     // Animació
                     function animate() {
                         if (!isDragging) {
@@ -355,60 +334,7 @@
                     console.error('Error carregant model:', error);
                 }
             );
-            */
-            
-            // ============================================================
-            // GEOMETRIA TEMPORAL INTERACTIVA (ELIMINA AIXÒ QUAN TINGUIS ELS MODELS)
-            // ============================================================
-            const geometry = new THREE.SphereGeometry(1.5, 32, 32);
-            const material = new THREE.MeshStandardMaterial({ 
-                color: 0xD4C5A9,
-                metalness: 0.8,
-                roughness: 0.2
-            });
-            const model = new THREE.Mesh(geometry, material);
-            scene.add(model);
 
-            // Control amb mouse (temporal)
-            let isDragging = false;
-            let previousMouseX = 0;
-            let previousMouseY = 0;
-            
-            renderer.domElement.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                previousMouseX = e.clientX;
-                previousMouseY = e.clientY;
-            });
-            
-            renderer.domElement.addEventListener('mousemove', (e) => {
-                if (isDragging) {
-                    const deltaX = e.clientX - previousMouseX;
-                    const deltaY = e.clientY - previousMouseY;
-                    
-                    model.rotation.y += deltaX * 0.01;
-                    model.rotation.x += deltaY * 0.01;
-                    
-                    previousMouseX = e.clientX;
-                    previousMouseY = e.clientY;
-                }
-            });
-            
-            renderer.domElement.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
-
-            // Animació temporal
-            function animate() {
-                if (!isDragging) {
-                    model.rotation.y += 0.003;
-                }
-                renderer.render(scene, camera);
-                requestAnimationFrame(animate);
-            }
-            animate();
-            // ============================================================
-
-            // Guarda la referència per poder netejar després
             activeScene = { scene, renderer };
         }
 
