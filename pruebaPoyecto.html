@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joieria Online</title>
+    <title>ShinyWeb - Joieria Online</title>
+    <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GLTFLoader -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <link rel="stylesheet" href="estiloo.css">
 </head>
@@ -12,7 +14,10 @@
     <!-- HEADER -->
     <header>
         <div class="header-content">
-            <h1>JOIERIA ONLINE</h1>
+            <div class="logo-title-container">
+                <img src="models/logo-shinyweb.png" alt="ShinyWeb Logo" class="header-logo">
+                <h1>ShinyWeb</h1>
+            </div>
             <div class="search-wrapper">
                 <input type="text" id="searchInput" placeholder="Cercar joies...">
             </div>
@@ -102,6 +107,10 @@
 
     <!-- ============= JAVASCRIPT ============= -->
     <script>
+        // VERIFICAR QUE THREE.JS Y GLTFLOADER ESTÁN CARGADOS
+        console.log('Three.js loaded:', typeof THREE !== 'undefined');
+        console.log('GLTFLoader loaded:', typeof THREE.GLTFLoader !== 'undefined');
+
         // DADES DELS PRODUCTES
         const products = [
             {
@@ -110,7 +119,7 @@
                 category: "anells",
                 price: 2500,
                 description: "Anell d'or blanc amb diamant natural de 0.5 quilats. Disseny clàssic i elegant.",
-                model: "models/pendientes1.glb"  // 👈 TU ARCHIVO 3D
+                model: "models/pendientes1.glb"
             },
             {
                 id: 2,
@@ -118,7 +127,7 @@
                 category: "anells",
                 price: 1800,
                 description: "Anell amb safir blau autèntic envoltat de diamants petits. Estil vintage.",
-                model: "models/anell-safir.glb"  // 👈 CUANDO TENGAS EL ARCHIVO, CAMBIA AQUÍ
+                model: null
             },
             {
                 id: 3,
@@ -126,7 +135,7 @@
                 category: "arracades",
                 price: 3200,
                 description: "Arracades de penjoll amb diamants naturals. Perfectes per ocasions especials.",
-                model: "models/arracades-diamant.glb"  // 👈 CUANDO TENGAS EL ARCHIVO, CAMBIA AQUÍ
+                model: null
             },
             {
                 id: 4,
@@ -134,7 +143,7 @@
                 category: "arracades",
                 price: 1500,
                 description: "Arracades amb perles cultivades d'aigua dolça. Elegància atemporal.",
-                model: "models/arracades-perla.glb"  // 👈 CUANDO TENGAS EL ARCHIVO, CAMBIA AQUÍ
+                model: null
             },
             {
                 id: 5,
@@ -142,7 +151,7 @@
                 category: "polseres",
                 price: 4500,
                 description: "Polsera Tennis amb diamants de talla brillant. Luxe incomparable.",
-                model: "models/polsera-tennis.glb"  // 👈 CUANDO TENGAS EL ARCHIVO, CAMBIA AQUÍ
+                model: null
             },
             {
                 id: 6,
@@ -150,7 +159,7 @@
                 category: "polseres",
                 price: 980,
                 description: "Polsera d'or de 18 quilats amb charms personalitzables. Estil modern.",
-                model: "models/polsera-charm.glb"  // 👈 CUANDO TENGAS EL ARCHIVO, CAMBIA AQUÍ
+                model: null
             }
         ];
 
@@ -165,7 +174,6 @@
         function create3DPreview(productId, container) {
             const product = products.find(p => p.id === productId);
             
-            // Crear escena Three.js
             const scene = new THREE.Scene();
             scene.background = new THREE.Color(0xFFFBF7);
 
@@ -181,7 +189,6 @@
             renderer.setSize(container.clientWidth, container.clientHeight);
             container.appendChild(renderer.domElement);
 
-            // Llums
             const light1 = new THREE.DirectionalLight(0xffffff, 1);
             light1.position.set(5, 5, 5);
             scene.add(light1);
@@ -189,24 +196,38 @@
             const light2 = new THREE.AmbientLight(0xffffff, 0.6);
             scene.add(light2);
 
-            // CARREGAR MODEL GLB
+            if (!product.model || typeof THREE.GLTFLoader === 'undefined') {
+                const geometry = new THREE.SphereGeometry(1, 32, 32);
+                const material = new THREE.MeshStandardMaterial({ 
+                    color: 0xD4C5A9,
+                    metalness: 0.7,
+                    roughness: 0.3
+                });
+                const fallbackModel = new THREE.Mesh(geometry, material);
+                scene.add(fallbackModel);
+                
+                function animate() {
+                    requestAnimationFrame(animate);
+                    fallbackModel.rotation.y += 0.005;
+                    renderer.render(scene, camera);
+                }
+                animate();
+                return;
+            }
+
             const loader = new THREE.GLTFLoader();
             loader.load(
                 product.model,
                 function(gltf) {
                     const model = gltf.scene;
+                    model.scale.set(2, 2, 2);
                     
-                    // Ajusta la mida del model
-                    model.scale.set(1.5, 1.5, 1.5);
-                    
-                    // Centra el model
                     const box = new THREE.Box3().setFromObject(model);
                     const center = box.getCenter(new THREE.Vector3());
                     model.position.sub(center);
                     
                     scene.add(model);
                     
-                    // Animació de rotació
                     function animate() {
                         requestAnimationFrame(animate);
                         model.rotation.y += 0.005;
@@ -216,11 +237,10 @@
                 },
                 undefined,
                 function(error) {
-                    console.error('Error carregant model:', error);
-                    // Mostrar esfera si hay error
+                    console.error('Error cargando modelo:', error);
                     const geometry = new THREE.SphereGeometry(1, 32, 32);
                     const material = new THREE.MeshStandardMaterial({ 
-                        color: 0xD4C5A9,
+                        color: 0xFF6B6B,
                         metalness: 0.7,
                         roughness: 0.3
                     });
@@ -269,29 +289,71 @@
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
             scene.add(ambientLight);
 
-            // CARREGAR MODEL GLB (INTERACTIU)
+            if (!product.model || typeof THREE.GLTFLoader === 'undefined') {
+                const geometry = new THREE.SphereGeometry(1.5, 32, 32);
+                const material = new THREE.MeshStandardMaterial({ 
+                    color: 0xD4C5A9,
+                    metalness: 0.8,
+                    roughness: 0.2
+                });
+                const model = new THREE.Mesh(geometry, material);
+                scene.add(model);
+
+                let isDragging = false;
+                let previousMouseX = 0;
+                let previousMouseY = 0;
+                
+                renderer.domElement.addEventListener('mousedown', (e) => {
+                    isDragging = true;
+                    previousMouseX = e.clientX;
+                    previousMouseY = e.clientY;
+                });
+                
+                renderer.domElement.addEventListener('mousemove', (e) => {
+                    if (isDragging) {
+                        const deltaX = e.clientX - previousMouseX;
+                        const deltaY = e.clientY - previousMouseY;
+                        model.rotation.y += deltaX * 0.01;
+                        model.rotation.x += deltaY * 0.01;
+                        previousMouseX = e.clientX;
+                        previousMouseY = e.clientY;
+                    }
+                });
+                
+                renderer.domElement.addEventListener('mouseup', () => {
+                    isDragging = false;
+                });
+
+                function animate() {
+                    if (!isDragging) {
+                        model.rotation.y += 0.003;
+                    }
+                    renderer.render(scene, camera);
+                    requestAnimationFrame(animate);
+                }
+                animate();
+                
+                activeScene = { scene, renderer };
+                return;
+            }
+
             const loader = new THREE.GLTFLoader();
             loader.load(
                 product.model,
                 function(gltf) {
                     const model = gltf.scene;
+                    model.scale.set(3, 3, 3);
                     
-                    // Ajusta la mida
-                    model.scale.set(2, 2, 2);
-                    
-                    // Centra el model
                     const box = new THREE.Box3().setFromObject(model);
                     const center = box.getCenter(new THREE.Vector3());
                     model.position.sub(center);
                     
                     scene.add(model);
                     
-                    // Variables per control del mouse
                     let isDragging = false;
                     let previousMouseX = 0;
                     let previousMouseY = 0;
                     
-                    // Control amb el mouse
                     renderer.domElement.addEventListener('mousedown', (e) => {
                         isDragging = true;
                         previousMouseX = e.clientX;
@@ -319,7 +381,6 @@
                         isDragging = false;
                     });
                     
-                    // Animació
                     function animate() {
                         if (!isDragging) {
                             model.rotation.y += 0.003;
@@ -331,7 +392,7 @@
                 },
                 undefined,
                 function(error) {
-                    console.error('Error carregant model:', error);
+                    console.error('Error en modal:', error);
                 }
             );
 
@@ -343,19 +404,15 @@
             currentProductId = productId;
             const product = products.find(p => p.id === productId);
             
-            // Actualitzar informació del modal
             document.getElementById('modalProductName').textContent = product.name;
             document.getElementById('modalProductDescription').textContent = product.description;
             document.getElementById('modalProductPrice').textContent = product.price + '€';
             
-            // Configurar botó d'afegir
             const addButton = document.getElementById('modalAddToCart');
             addButton.onclick = () => addToCartFromModal(productId);
             
-            // Mostrar modal
             document.getElementById('productModal').classList.add('active');
             
-            // Crear visor 3D interactiu
             setTimeout(() => {
                 const container = document.getElementById('productModal3D');
                 create3DInteractiveViewer(productId, container);
@@ -369,7 +426,6 @@
             document.getElementById('productModal').classList.remove('active');
             currentProductId = null;
             
-            // Netejar el visor 3D
             if (activeScene) {
                 const container = document.getElementById('productModal3D');
                 container.innerHTML = '';
