@@ -11,13 +11,11 @@
     <!-- HEADER -->
     <header>
         <div class="header-content">
-            <h1>✨ JOIERIA ONLINE</h1>
+            <h1>JOIERIA ONLINE</h1>
             <div class="search-wrapper">
                 <input type="text" id="searchInput" placeholder="Cercar joies...">
-                <span class="search-icon">🔍</span>
             </div>
             <button class="cart-btn" onclick="toggleCart()">
-                <span class="cart-icon">🛍️</span>
                 <span class="cart-text">Cistell</span>
                 <span class="cart-count" id="cartCount">0</span>
             </button>
@@ -28,19 +26,15 @@
     <nav>
         <div class="nav-content">
             <button class="nav-btn active" onclick="filterCategory('tots')">
-                <span class="nav-icon">💎</span>
                 Tots
             </button>
             <button class="nav-btn" onclick="filterCategory('anells')">
-                <span class="nav-icon">💍</span>
                 Anells
             </button>
             <button class="nav-btn" onclick="filterCategory('arracades')">
-                <span class="nav-icon">✨</span>
                 Arracades
             </button>
             <button class="nav-btn" onclick="filterCategory('polseres')">
-                <span class="nav-icon">📿</span>
                 Polseres
             </button>
         </div>
@@ -51,21 +45,54 @@
         <div class="products-grid" id="productsGrid"></div>
     </main>
 
-    <!-- MODAL CISTELL MEJORADO -->
+    <!-- MODAL DETALL PRODUCTE -->
+    <div class="product-modal" id="productModal" onclick="closeProductModal(event)">
+        <div class="product-modal-content" onclick="event.stopPropagation()">
+            <button class="close-modal" onclick="closeProductModal()">×</button>
+            <div class="product-modal-body">
+                <div class="product-modal-3d" id="productModal3D">
+                    <!-- AQUÍ SE CARGARÁ EL VISOR 3D INTERACTIVO -->
+                </div>
+                <div class="product-modal-info">
+                    <div class="product-modal-badge">NOU</div>
+                    <h2 id="modalProductName" class="modal-product-name"></h2>
+                    <p id="modalProductDescription" class="modal-product-description"></p>
+                    <div id="modalProductPrice" class="modal-product-price"></div>
+                    <div class="modal-product-features">
+                        <div class="feature-item">
+                            <span class="feature-icon">✓</span>
+                            <span>Enviament gratuït</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">✓</span>
+                            <span>Garantia de 2 anys</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">✓</span>
+                            <span>Certificat d'autenticitat</span>
+                        </div>
+                    </div>
+                    <button class="modal-add-to-cart" id="modalAddToCart">
+                        <span class="btn-text">Afegir al Cistell</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CISTELL -->
     <div class="cart-modal" id="cartModal" onclick="closeCartOutside(event)">
         <div class="cart-content" onclick="event.stopPropagation()">
             <div class="cart-header">
-                <h2>🛍️ El Teu Cistell</h2>
+                <h2>El Teu Cistell</h2>
                 <button class="close-cart" onclick="toggleCart()">×</button>
             </div>
             <div id="cartItems"></div>
             <div class="cart-actions">
                 <button class="checkout-btn" onclick="checkout()">
-                    <span>💳</span>
                     Finalitzar Compra
                 </button>
                 <button class="clear-cart-btn" onclick="clearCart()">
-                    <span>🗑️</span>
                     Buidar Cistell
                 </button>
             </div>
@@ -81,48 +108,48 @@
                 name: "Anell Diamant",
                 category: "anells",
                 price: 2500,
-                description: "Anell d'or blanc amb diamant",
-                model: "modelos/pendientes1.glb"
+                description: "Anell d'or blanc amb diamant natural de 0.5 quilats. Disseny clàssic i elegant.",
+                model: "models/anell-diamant.glb"  //  POSA AQUÍ LA RUTA DEL TEU MODEL DE BLENDER
             },
             {
                 id: 2,
                 name: "Anell Safir",
                 category: "anells",
                 price: 1800,
-                description: "Anell amb safir blau",
-                model: "models/anell2.glb"
+                description: "Anell amb safir blau autèntic envoltat de diamants petits. Estil vintage.",
+                model: "models/anell-safir.glb"  //  POSA AQUÍ LA RUTA DEL TEU MODEL DE BLENDER
             },
             {
                 id: 3,
                 name: "Arracades Diamant",
                 category: "arracades",
                 price: 3200,
-                description: "Arracades amb diamants",
-                model: "models/arracades1.glb"
+                description: "Arracades de penjoll amb diamants naturals. Perfectes per ocasions especials.",
+                model: "models/arracades-diamant.glb"  //  POSA AQUÍ LA RUTA DEL TEU MODEL DE BLENDER
             },
             {
                 id: 4,
                 name: "Arracades Perla",
                 category: "arracades",
                 price: 1500,
-                description: "Arracades amb perles",
-                model: "models/arracades2.glb"
+                description: "Arracades amb perles cultivades d'aigua dolça. Elegància atemporal.",
+                model: "models/arracades-perla.glb"  //  POSA AQUÍ LA RUTA DEL TEU MODEL DE BLENDER
             },
             {
                 id: 5,
                 name: "Polsera Tennis",
                 category: "polseres",
                 price: 4500,
-                description: "Polsera amb diamants",
-                model: "models/polsera1.glb"
+                description: "Polsera Tennis amb diamants de talla brillant. Luxe incomparable.",
+                model: "models/polsera-tennis.glb"  //  POSA AQUÍ LA RUTA DEL TEU MODEL DE BLENDER
             },
             {
                 id: 6,
                 name: "Polsera Charm",
                 category: "polseres",
                 price: 980,
-                description: "Polsera d'or amb charms",
-                model: "models/polsera2.glb"
+                description: "Polsera d'or de 18 quilats amb charms personalitzables. Estil modern.",
+                model: "models/polsera-charm.glb"  //  POSA AQUÍ LA RUTA DEL TEU MODEL DE BLENDER
             }
         ];
 
@@ -130,14 +157,16 @@
         let cart = [];
         let currentCategory = 'tots';
         let searchQuery = '';
+        let currentProductId = null;
+        let activeScene = null;
 
-        // ============= CARREGAR MODELS 3D DE BLENDER =============
-        function create3DViewer(productId, container) {
+        // ============= CREAR VISOR 3D - VISTA PREVIA (TARGETES) =============
+        function create3DPreview(productId, container) {
             const product = products.find(p => p.id === productId);
             
             // Crear escena Three.js
             const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xFAF6F0);
+            scene.background = new THREE.Color(0xFFFBF7);
 
             const camera = new THREE.PerspectiveCamera(
                 45, 
@@ -156,29 +185,273 @@
             light1.position.set(5, 5, 5);
             scene.add(light1);
 
-            const light2 = new THREE.AmbientLight(0xffffff, 0.5);
+            const light2 = new THREE.AmbientLight(0xffffff, 0.6);
             scene.add(light2);
 
-            // TEMPORAL: Geometria simple (substitueix amb el teu model)
+            // ============================================================
+            //  SECCIÓ PER CARREGAR ELS TEUS MODELS 3D DE BLENDER
+            // ============================================================
+            // QUAN TINGUIS ELS ARXIUS .GLB DE BLENDER:
+            // 1. Crea una carpeta "models/" al mateix directori del HTML
+            // 2. Exporta els teus models de Blender com a .glb
+            // 3. Puja'ls a la carpeta "models/"
+            // 4. Descomenta el codi següent i comenta la geometria temporal
+            
+            /*
+            // CARREGAR MODEL GLB DE BLENDER
+            const loader = new THREE.GLTFLoader();
+            loader.load(
+                product.model,  // Ruta del teu model
+                function(gltf) {
+                    const model = gltf.scene;
+                    
+                    // Ajusta la mida del model (prova amb diferents valors)
+                    model.scale.set(1.5, 1.5, 1.5);
+                    
+                    // Centra el model
+                    const box = new THREE.Box3().setFromObject(model);
+                    const center = box.getCenter(new THREE.Vector3());
+                    model.position.sub(center);
+                    
+                    scene.add(model);
+                    
+                    // Animació de rotació
+                    function animate() {
+                        requestAnimationFrame(animate);
+                        model.rotation.y += 0.005;
+                        renderer.render(scene, camera);
+                    }
+                    animate();
+                },
+                undefined,
+                function(error) {
+                    console.error('Error carregant model:', error);
+                }
+            );
+            */
+            
+            // ============================================================
+            // GEOMETRIA TEMPORAL (ELIMINA AIXÒ QUAN TINGUIS ELS MODELS)
+            // ============================================================
             const geometry = new THREE.SphereGeometry(1, 32, 32);
             const material = new THREE.MeshStandardMaterial({ 
-                color: 0xC9A961,
+                color: 0xD4C5A9,
+                metalness: 0.7,
+                roughness: 0.3
+            });
+            const model = new THREE.Mesh(geometry, material);
+            scene.add(model);
+
+            // Animació temporal
+            function animate() {
+                requestAnimationFrame(animate);
+                model.rotation.y += 0.005;
+                renderer.render(scene, camera);
+            }
+            animate();
+            // ============================================================
+        }
+
+        // ============= CREAR VISOR 3D INTERACTIU (MODAL) =============
+        function create3DInteractiveViewer(productId, container) {
+            // Netejar contenidor
+            container.innerHTML = '';
+            
+            const product = products.find(p => p.id === productId);
+            
+            // Crear escena Three.js
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xFFFBF7);
+
+            const camera = new THREE.PerspectiveCamera(
+                50, 
+                container.clientWidth / container.clientHeight, 
+                0.1, 
+                1000
+            );
+            camera.position.set(0, 0, 6);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+
+            // Llums millors per visualització
+            const light1 = new THREE.DirectionalLight(0xffffff, 1.2);
+            light1.position.set(8, 8, 8);
+            scene.add(light1);
+
+            const light2 = new THREE.DirectionalLight(0xffffff, 0.8);
+            light2.position.set(-5, 5, -5);
+            scene.add(light2);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            // ============================================================
+            // SECCIÓ PER CARREGAR MODEL 3D INTERACTIU DE BLENDER
+            // ============================================================
+            // Aquest és el visor principal que apareix al fer click
+            // Mateix procés que abans però amb millor control
+            
+            /*
+            // CARREGAR MODEL GLB DE BLENDER (INTERACTIU)
+            const loader = new THREE.GLTFLoader();
+            loader.load(
+                product.model,
+                function(gltf) {
+                    const model = gltf.scene;
+                    
+                    // Ajusta la mida
+                    model.scale.set(2, 2, 2);
+                    
+                    // Centra el model
+                    const box = new THREE.Box3().setFromObject(model);
+                    const center = box.getCenter(new THREE.Vector3());
+                    model.position.sub(center);
+                    
+                    scene.add(model);
+                    
+                    // Variables per control del mouse
+                    let isDragging = false;
+                    let previousMouseX = 0;
+                    let previousMouseY = 0;
+                    
+                    // Control amb el mouse
+                    renderer.domElement.addEventListener('mousedown', (e) => {
+                        isDragging = true;
+                        previousMouseX = e.clientX;
+                        previousMouseY = e.clientY;
+                    });
+                    
+                    renderer.domElement.addEventListener('mousemove', (e) => {
+                        if (isDragging) {
+                            const deltaX = e.clientX - previousMouseX;
+                            const deltaY = e.clientY - previousMouseY;
+                            
+                            model.rotation.y += deltaX * 0.01;
+                            model.rotation.x += deltaY * 0.01;
+                            
+                            previousMouseX = e.clientX;
+                            previousMouseY = e.clientY;
+                        }
+                    });
+                    
+                    renderer.domElement.addEventListener('mouseup', () => {
+                        isDragging = false;
+                    });
+                    
+                    // Animació
+                    function animate() {
+                        if (!isDragging) {
+                            model.rotation.y += 0.003;
+                        }
+                        renderer.render(scene, camera);
+                        requestAnimationFrame(animate);
+                    }
+                    animate();
+                },
+                undefined,
+                function(error) {
+                    console.error('Error carregant model:', error);
+                }
+            );
+            */
+            
+            // ============================================================
+            // GEOMETRIA TEMPORAL INTERACTIVA (ELIMINA AIXÒ QUAN TINGUIS ELS MODELS)
+            // ============================================================
+            const geometry = new THREE.SphereGeometry(1.5, 32, 32);
+            const material = new THREE.MeshStandardMaterial({ 
+                color: 0xD4C5A9,
                 metalness: 0.8,
                 roughness: 0.2
             });
             const model = new THREE.Mesh(geometry, material);
             scene.add(model);
 
-            // Animació
+            // Control amb mouse (temporal)
+            let isDragging = false;
+            let previousMouseX = 0;
+            let previousMouseY = 0;
+            
+            renderer.domElement.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                previousMouseX = e.clientX;
+                previousMouseY = e.clientY;
+            });
+            
+            renderer.domElement.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    const deltaX = e.clientX - previousMouseX;
+                    const deltaY = e.clientY - previousMouseY;
+                    
+                    model.rotation.y += deltaX * 0.01;
+                    model.rotation.x += deltaY * 0.01;
+                    
+                    previousMouseX = e.clientX;
+                    previousMouseY = e.clientY;
+                }
+            });
+            
+            renderer.domElement.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            // Animació temporal
             function animate() {
-                requestAnimationFrame(animate);
-                model.rotation.y += 0.01;
+                if (!isDragging) {
+                    model.rotation.y += 0.003;
+                }
                 renderer.render(scene, camera);
+                requestAnimationFrame(animate);
             }
             animate();
+            // ============================================================
+
+            // Guarda la referència per poder netejar després
+            activeScene = { scene, renderer };
         }
 
-        // RENDERITZAR PRODUCTES
+        // ============= OBRIR MODAL PRODUCTE =============
+        function openProductDetail(productId) {
+            currentProductId = productId;
+            const product = products.find(p => p.id === productId);
+            
+            // Actualitzar informació del modal
+            document.getElementById('modalProductName').textContent = product.name;
+            document.getElementById('modalProductDescription').textContent = product.description;
+            document.getElementById('modalProductPrice').textContent = product.price + '€';
+            
+            // Configurar botó d'afegir
+            const addButton = document.getElementById('modalAddToCart');
+            addButton.onclick = () => addToCartFromModal(productId);
+            
+            // Mostrar modal
+            document.getElementById('productModal').classList.add('active');
+            
+            // Crear visor 3D interactiu
+            setTimeout(() => {
+                const container = document.getElementById('productModal3D');
+                create3DInteractiveViewer(productId, container);
+            }, 100);
+        }
+
+        // ============= TANCAR MODAL PRODUCTE =============
+        function closeProductModal(event) {
+            if (event && event.target.className !== 'product-modal') return;
+            
+            document.getElementById('productModal').classList.remove('active');
+            currentProductId = null;
+            
+            // Netejar el visor 3D
+            if (activeScene) {
+                const container = document.getElementById('productModal3D');
+                container.innerHTML = '';
+                activeScene = null;
+            }
+        }
+
+        // ============= RENDERITZAR PRODUCTES =============
         function renderProducts() {
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = '';
@@ -197,36 +470,33 @@
             }
 
             if (filtered.length === 0) {
-                grid.innerHTML = '<div class="no-results">❌ No hi ha productes</div>';
+                grid.innerHTML = '<div class="no-results">No hi ha productes</div>';
                 return;
             }
 
             filtered.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
+                card.onclick = () => openProductDetail(product.id);
                 card.innerHTML = `
                     <div class="product-3d" id="viewer-${product.id}"></div>
                     <div class="product-badge">NOU</div>
                     <div class="product-info">
                         <div class="product-name">${product.name}</div>
-                        <div class="product-description">${product.description}</div>
                         <div class="product-price">${product.price}€</div>
-                        <button class="add-to-cart" onclick="addToCart(${product.id})">
-                            <span class="btn-icon">🛒</span>
-                            <span class="btn-text">Afegir al Cistell</span>
-                        </button>
+                        <div class="product-click-hint">Click per veure detalls</div>
                     </div>
                 `;
                 grid.appendChild(card);
 
                 setTimeout(() => {
                     const container = document.getElementById(`viewer-${product.id}`);
-                    if (container) create3DViewer(product.id, container);
+                    if (container) create3DPreview(product.id, container);
                 }, 100);
             });
         }
 
-        // FILTRES
+        // ============= FILTRES =============
         function filterCategory(category) {
             currentCategory = category;
             document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -241,22 +511,21 @@
             renderProducts();
         });
 
-        // CISTELL
-        function addToCart(productId) {
+        // ============= CISTELL =============
+        function addToCartFromModal(productId) {
             const product = products.find(p => p.id === productId);
             cart.push(product);
             updateCartCount();
             
-            const button = event.target.closest('.add-to-cart');
-            button.innerHTML = '<span class="btn-icon">✓</span><span class="btn-text">Afegit!</span>';
+            const button = document.getElementById('modalAddToCart');
+            button.innerHTML = '<span class="btn-text">Afegit!</span>';
             button.classList.add('added');
             
             setTimeout(() => {
-                button.innerHTML = '<span class="btn-icon">🛒</span><span class="btn-text">Afegir al Cistell</span>';
+                button.innerHTML = '<span class="btn-text">Afegir al Cistell</span>';
                 button.classList.remove('added');
             }, 1500);
             
-            // Animación del contador
             const cartCount = document.getElementById('cartCount');
             cartCount.classList.add('bump');
             setTimeout(() => cartCount.classList.remove('bump'), 300);
@@ -283,7 +552,6 @@
             if (cart.length === 0) {
                 container.innerHTML = `
                     <div class="empty-cart">
-                        <div class="empty-cart-icon">🛍️</div>
                         <div class="empty-cart-text">El cistell està buit</div>
                         <div class="empty-cart-subtext">Afegeix alguns productes per començar</div>
                     </div>
@@ -300,7 +568,6 @@
                     <div class="cart-item">
                         <div class="cart-item-info">
                             <div class="cart-item-name">${item.name}</div>
-                            <div class="cart-item-desc">${item.description}</div>
                             <div class="cart-item-price">${item.price}€</div>
                         </div>
                         <button class="remove-item" onclick="removeFromCart(${index})" title="Eliminar">
@@ -351,7 +618,6 @@
                 return;
             }
             alert('Redirigint a la pàgina de pagament...');
-            // Aquí pots afegir la lògica de checkout
         }
 
         // INICIAR
