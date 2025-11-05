@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ca">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <link rel="stylesheet" href="estiloo.css">
 </head>
+
 <body>
     <!-- HEADER -->
     <header>
@@ -31,18 +33,10 @@
     <!-- NAVEGACIÓ -->
     <nav>
         <div class="nav-content">
-            <button class="nav-btn active" onclick="filterCategory('tots')">
-                Tots
-            </button>
-            <button class="nav-btn" onclick="filterCategory('anells')">
-                Anells
-            </button>
-            <button class="nav-btn" onclick="filterCategory('arracades')">
-                Arracades
-            </button>
-            <button class="nav-btn" onclick="filterCategory('polseres')">
-                Polseres
-            </button>
+            <button class="nav-btn active" onclick="filterCategory('tots')">Tots</button>
+            <button class="nav-btn" onclick="filterCategory('anells')">Anells</button>
+            <button class="nav-btn" onclick="filterCategory('arracades')">Arracades</button>
+            <button class="nav-btn" onclick="filterCategory('polseres')">Polseres</button>
         </div>
     </nav>
 
@@ -65,18 +59,9 @@
                     <p id="modalProductDescription" class="modal-product-description"></p>
                     <div id="modalProductPrice" class="modal-product-price"></div>
                     <div class="modal-product-features">
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>Enviament gratuït</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>Garantia de 2 anys</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">✓</span>
-                            <span>Certificat d'autenticitat</span>
-                        </div>
+                        <div class="feature-item"><span class="feature-icon">✓</span><span>Enviament gratuït</span></div>
+                        <div class="feature-item"><span class="feature-icon">✓</span><span>Garantia de 2 anys</span></div>
+                        <div class="feature-item"><span class="feature-icon">✓</span><span>Certificat d'autenticitat</span></div>
                     </div>
                     <button class="modal-add-to-cart" id="modalAddToCart">
                         <span class="btn-text">Afegir al Cistell</span>
@@ -95,13 +80,18 @@
             </div>
             <div id="cartItems"></div>
             <div class="cart-actions">
-                <button class="checkout-btn" onclick="checkout()">
-                    Finalitzar Compra
-                </button>
-                <button class="clear-cart-btn" onclick="clearCart()">
-                    Buidar Cistell
-                </button>
+                <button class="checkout-btn" onclick="checkout()">Finalitzar Compra</button>
+                <button class="clear-cart-btn" onclick="clearCart()">Buidar Cistell</button>
             </div>
+        </div>
+    </div>
+
+    <!-- POPUP COMPRA FINALITZADA -->
+    <div class="checkout-popup" id="checkoutPopup" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); z-index:9999; align-items:center; justify-content:center;">
+        <div style="background:#FFF8F0; padding:40px 30px; border-radius:20px; box-shadow:0 2px 28px rgba(0,0,0,0.15); display:flex; flex-direction:column; align-items:center;">
+            <h2 style="color:#B99A72; margin-bottom:18px;">Compra finalitzada!</h2>
+            <p style="font-size:18px; color:#6B5D4F; margin-bottom:12px;">Gràcies per confiar en ShinyWeb.<br>Rebràs un correu amb els detalls de la teva compra.</p>
+            <button onclick="closeCheckoutPopup()" style="background:linear-gradient(135deg,#E8C4A4,#D5BA9C);color:white;font-weight:bold;padding:9px 30px;border:none;border-radius:12px;font-size:16px;margin-top:16px;cursor:pointer;">Acceptar</button>
         </div>
     </div>
 
@@ -111,92 +101,44 @@
         console.log('Three.js loaded:', typeof THREE !== 'undefined');
         console.log('GLTFLoader loaded:', typeof THREE.GLTFLoader !== 'undefined');
 
-        // DADES DELS PRODUCTES
+        // DADES DELS PRODUCTES (corrige las rutas a tus .glb)
         const products = [
-            {
-                id: 1,
-                name: "Anell Diamant",
-                category: "anells",
-                price: 2500,
-                description: "Anell d'or blanc amb diamant natural de 0.5 quilats. Disseny clàssic i elegant.",
-                model: "models/pendientes1.glb"
-            },
-            {
-                id: 2,
-                name: "Anell Safir",
-                category: "anells",
-                price: 1800,
-                description: "Anell amb safir blau autèntic envoltat de diamants petits. Estil vintage.",
-                model: null
-            },
-            {
-                id: 3,
-                name: "Arracades Diamant",
-                category: "arracades",
-                price: 3200,
-                description: "Arracades de penjoll amb diamants naturals. Perfectes per ocasions especials.",
-                model: null
-            },
-            {
-                id: 4,
-                name: "Arracades Perla",
-                category: "arracades",
-                price: 1500,
-                description: "Arracades amb perles cultivades d'aigua dolça. Elegància atemporal.",
-                model: null
-            },
-            {
-                id: 5,
-                name: "Polsera Tennis",
-                category: "polseres",
-                price: 4500,
-                description: "Polsera Tennis amb diamants de talla brillant. Luxe incomparable.",
-                model: null
-            },
-            {
-                id: 6,
-                name: "Polsera Charm",
-                category: "polseres",
-                price: 980,
-                description: "Polsera d'or de 18 quilats amb charms personalitzables. Estil modern.",
-                model: null
-            }
+            { id: 1, name: "Anell Diamant", category: "anells", price: 2500, description: "Anell d'or blanc amb diamant natural de 0.5 quilats. Disseny clàssic i elegant.", model: "models/anillo1.glb" },
+            { id: 2, name: "Anell Safir", category: "anells", price: 1800, description: "Anell amb safir blau autèntic envoltat de diamants petits. Estil vintage.", model: "models/anillo2.glb" },
+            { id: 3, name: "Arracades Diamant", category: "arracades", price: 3200, description: "Arracades de penjoll amb diamants naturals. Perfectes per ocasions especials.", model: "models/pendientes1.glb" },
+            { id: 4, name: "Arracades Perla", category: "arracades", price: 1500, description: "Arracades amb perles cultivades d'aigua dolça. Elegància atemporal.", model: "models/pendientes2.glb" },
+            { id: 5, name: "Polsera Tennis", category: "polseres", price: 4500, description: "Polsera Tennis amb diamants de talla brillant. Luxe incomparable.", model: "models/pulsera1.glb" },
+            { id: 6, name: "Polsera Charm", category: "polseres", price: 980, description: "Polsera d'or de 18 quilats amb charms personalitzables. Estil modern.", model: "models/pulsera2.glb" }
         ];
 
-        // ESTAT (en memòria)
         let cart = [];
         let currentCategory = 'tots';
         let searchQuery = '';
         let currentProductId = null;
         let activeScene = null;
 
-        // ============= CREAR VISOR 3D - VISTA PREVIA (TARGETES) =============
         function create3DPreview(productId, container) {
             const product = products.find(p => p.id === productId);
-            
+
             const scene = new THREE.Scene();
             scene.background = new THREE.Color(0xFFFBF7);
 
             const camera = new THREE.PerspectiveCamera(
-                45, 
-                container.clientWidth / container.clientHeight, 
-                0.1, 
-                1000
+                45, container.clientWidth / container.clientHeight, 0.1, 1000
             );
             camera.position.set(0, 0, 5);
 
-            const renderer = new THREE.WebGLRenderer({ 
+            const renderer = new THREE.WebGLRenderer({
                 antialias: true,
                 alpha: true,
                 preserveDrawingBuffer: true
             });
             renderer.setSize(container.clientWidth, container.clientHeight);
-            renderer.outputEncoding = THREE.sRGBEncoding;  // 👈 PRESERVAR COLORES
+            renderer.outputEncoding = THREE.sRGBEncoding;
             renderer.toneMapping = THREE.ACESFilmicToneMapping;
             renderer.toneMappingExposure = 1.0;
             container.appendChild(renderer.domElement);
 
-            // Llums mejoradas
             const light1 = new THREE.DirectionalLight(0xffffff, 1.5);
             light1.position.set(5, 5, 5);
             scene.add(light1);
@@ -210,17 +152,17 @@
 
             if (!product.model || typeof THREE.GLTFLoader === 'undefined') {
                 const geometry = new THREE.SphereGeometry(1, 32, 32);
-                const material = new THREE.MeshStandardMaterial({ 
-                    color: 0xD4C5A9,
-                    metalness: 0.7,
-                    roughness: 0.3
-                });
+                const material = new THREE.MeshStandardMaterial({ color: 0xD4C5A9, metalness: 0.7, roughness: 0.3 });
                 const fallbackModel = new THREE.Mesh(geometry, material);
                 scene.add(fallbackModel);
-                
+
+                let phase = 0;
                 function animate() {
                     requestAnimationFrame(animate);
-                    fallbackModel.rotation.y += 0.005;
+                    const amplitude = 0.1;
+                    fallbackModel.rotation.y += 0.01;
+                    fallbackModel.position.y = amplitude * Math.sin(phase);
+                    phase += 0.02;
                     renderer.render(scene, camera);
                 }
                 animate();
@@ -232,33 +174,31 @@
                 product.model,
                 function(gltf) {
                     const model = gltf.scene;
-                    model.scale.set(2, 2, 2);
-                    
-                    // PRESERVAR MATERIALES Y TEXTURAS
+                    model.scale.set(0.6, 0.6, 0.6);
+
                     model.traverse((child) => {
                         if (child.isMesh) {
                             child.castShadow = true;
                             child.receiveShadow = true;
-                            // NO modificar el material, mantener el original
                             if (child.material) {
                                 child.material.needsUpdate = true;
                             }
                         }
                     });
-                    
-                    // Ajustar tamaño SIN perder calidad
-                    model.scale.set(0.8, 0.8, 0.8);
-                    
-                    // Centra el model
+
                     const box = new THREE.Box3().setFromObject(model);
                     const center = box.getCenter(new THREE.Vector3());
                     model.position.sub(center);
-                    
+
                     scene.add(model);
-                    
+
+                    let phase = 0;
                     function animate() {
                         requestAnimationFrame(animate);
-                        model.rotation.y += 0.005;
+                        const amplitude = 0.1;
+                        model.rotation.y += 0.01;
+                        model.position.y = amplitude * Math.sin(phase);
+                        phase += 0.02;
                         renderer.render(scene, camera);
                     }
                     animate();
@@ -266,54 +206,33 @@
                 undefined,
                 function(error) {
                     console.error('Error cargando modelo:', error);
-                    const geometry = new THREE.SphereGeometry(1, 32, 32);
-                    const material = new THREE.MeshStandardMaterial({ 
-                        color: 0xFF6B6B,
-                        metalness: 0.7,
-                        roughness: 0.3
-                    });
-                    const fallbackModel = new THREE.Mesh(geometry, material);
-                    scene.add(fallbackModel);
-                    
-                    function animate() {
-                        requestAnimationFrame(animate);
-                        fallbackModel.rotation.y += 0.005;
-                        renderer.render(scene, camera);
-                    }
-                    animate();
                 }
             );
         }
 
-        // ============= CREAR VISOR 3D INTERACTIU (MODAL) =============
         function create3DInteractiveViewer(productId, container) {
             container.innerHTML = '';
-            
             const product = products.find(p => p.id === productId);
-            
+
             const scene = new THREE.Scene();
             scene.background = new THREE.Color(0xFFFBF7);
 
             const camera = new THREE.PerspectiveCamera(
-                50, 
-                container.clientWidth / container.clientHeight, 
-                0.1, 
-                1000
+                50, container.clientWidth / container.clientHeight, 0.1, 1000
             );
-            camera.position.set(0, 0, 6);
+            camera.position.set(0, 0, 5);
 
-            const renderer = new THREE.WebGLRenderer({ 
+            const renderer = new THREE.WebGLRenderer({
                 antialias: true,
                 alpha: true,
                 preserveDrawingBuffer: true
             });
             renderer.setSize(container.clientWidth, container.clientHeight);
-            renderer.outputEncoding = THREE.sRGBEncoding;  // 👈 PRESERVAR COLORES
+            renderer.outputEncoding = THREE.sRGBEncoding;
             renderer.toneMapping = THREE.ACESFilmicToneMapping;
             renderer.toneMappingExposure = 1.0;
             container.appendChild(renderer.domElement);
 
-            // Llums mejoradas
             const light1 = new THREE.DirectionalLight(0xffffff, 1.8);
             light1.position.set(8, 8, 8);
             scene.add(light1);
@@ -327,24 +246,21 @@
 
             if (!product.model || typeof THREE.GLTFLoader === 'undefined') {
                 const geometry = new THREE.SphereGeometry(1.5, 32, 32);
-                const material = new THREE.MeshStandardMaterial({ 
-                    color: 0xD4C5A9,
-                    metalness: 0.8,
-                    roughness: 0.2
-                });
+                const material = new THREE.MeshStandardMaterial({ color: 0xD4C5A9, metalness: 0.8, roughness: 0.2 });
                 const model = new THREE.Mesh(geometry, material);
                 scene.add(model);
 
+                let phase = 0;
                 let isDragging = false;
                 let previousMouseX = 0;
                 let previousMouseY = 0;
-                
+
                 renderer.domElement.addEventListener('mousedown', (e) => {
                     isDragging = true;
                     previousMouseX = e.clientX;
                     previousMouseY = e.clientY;
                 });
-                
+
                 renderer.domElement.addEventListener('mousemove', (e) => {
                     if (isDragging) {
                         const deltaX = e.clientX - previousMouseX;
@@ -355,20 +271,27 @@
                         previousMouseY = e.clientY;
                     }
                 });
-                
+
                 renderer.domElement.addEventListener('mouseup', () => {
+                    isDragging = false;
+                });
+
+                renderer.domElement.addEventListener('mouseleave', () => {
                     isDragging = false;
                 });
 
                 function animate() {
                     if (!isDragging) {
-                        model.rotation.y += 0.003;
+                        const amplitude = 0.1;
+                        model.rotation.y += 0.01;
+                        model.position.y = amplitude * Math.sin(phase);
+                        phase += 0.02;
                     }
                     renderer.render(scene, camera);
                     requestAnimationFrame(animate);
                 }
                 animate();
-                
+
                 activeScene = { scene, renderer };
                 return;
             }
@@ -378,64 +301,59 @@
                 product.model,
                 function(gltf) {
                     const model = gltf.scene;
-                    model.scale.set(3, 3, 3);
-                    
-                    // PRESERVAR MATERIALES Y TEXTURAS
+                    model.scale.set(0.6, 0.6, 0.6);
+
                     model.traverse((child) => {
                         if (child.isMesh) {
                             child.castShadow = true;
                             child.receiveShadow = true;
-                            // NO modificar el material, mantener el original
                             if (child.material) {
                                 child.material.needsUpdate = true;
                             }
                         }
                     });
-                    
-                    // Ajustar tamaño SIN perder calidad
-                    model.scale.set(1.2, 1.2, 1.2);
-                    
-                    // Centra el model
+
                     const box = new THREE.Box3().setFromObject(model);
                     const center = box.getCenter(new THREE.Vector3());
                     model.position.sub(center);
-                    
+
                     scene.add(model);
-                    
+
+                    let phase = 0;
                     let isDragging = false;
                     let previousMouseX = 0;
                     let previousMouseY = 0;
-                    
+
                     renderer.domElement.addEventListener('mousedown', (e) => {
                         isDragging = true;
                         previousMouseX = e.clientX;
                         previousMouseY = e.clientY;
                     });
-                    
+
                     renderer.domElement.addEventListener('mousemove', (e) => {
                         if (isDragging) {
                             const deltaX = e.clientX - previousMouseX;
                             const deltaY = e.clientY - previousMouseY;
-                            
                             model.rotation.y += deltaX * 0.01;
                             model.rotation.x += deltaY * 0.01;
-                            
                             previousMouseX = e.clientX;
                             previousMouseY = e.clientY;
                         }
                     });
-                    
+
                     renderer.domElement.addEventListener('mouseup', () => {
                         isDragging = false;
                     });
-                    
                     renderer.domElement.addEventListener('mouseleave', () => {
                         isDragging = false;
                     });
-                    
+
                     function animate() {
                         if (!isDragging) {
-                            model.rotation.y += 0.003;
+                            const amplitude = 0.1;
+                            model.rotation.y += 0.01;
+                            model.position.y = amplitude * Math.sin(phase);
+                            phase += 0.02;
                         }
                         renderer.render(scene, camera);
                         requestAnimationFrame(animate);
@@ -455,16 +373,16 @@
         function openProductDetail(productId) {
             currentProductId = productId;
             const product = products.find(p => p.id === productId);
-            
+
             document.getElementById('modalProductName').textContent = product.name;
             document.getElementById('modalProductDescription').textContent = product.description;
             document.getElementById('modalProductPrice').textContent = product.price + '€';
-            
+
             const addButton = document.getElementById('modalAddToCart');
             addButton.onclick = () => addToCartFromModal(productId);
-            
+
             document.getElementById('productModal').classList.add('active');
-            
+
             setTimeout(() => {
                 const container = document.getElementById('productModal3D');
                 create3DInteractiveViewer(productId, container);
@@ -474,10 +392,10 @@
         // ============= TANCAR MODAL PRODUCTE =============
         function closeProductModal(event) {
             if (event && event.target.className !== 'product-modal') return;
-            
+
             document.getElementById('productModal').classList.remove('active');
             currentProductId = null;
-            
+
             if (activeScene) {
                 const container = document.getElementById('productModal3D');
                 container.innerHTML = '';
@@ -497,7 +415,7 @@
             }
 
             if (searchQuery) {
-                filtered = filtered.filter(p => 
+                filtered = filtered.filter(p =>
                     p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                     p.description.toLowerCase().includes(searchQuery.toLowerCase())
                 );
@@ -550,16 +468,16 @@
             const product = products.find(p => p.id === productId);
             cart.push(product);
             updateCartCount();
-            
+
             const button = document.getElementById('modalAddToCart');
             button.innerHTML = '<span class="btn-text">Afegit!</span>';
             button.classList.add('added');
-            
+
             setTimeout(() => {
                 button.innerHTML = '<span class="btn-text">Afegir al Cistell</span>';
                 button.classList.remove('added');
             }, 1500);
-            
+
             const cartCount = document.getElementById('cartCount');
             cartCount.classList.add('bump');
             setTimeout(() => cartCount.classList.remove('bump'), 300);
@@ -582,7 +500,6 @@
 
         function renderCart() {
             const container = document.getElementById('cartItems');
-            
             if (cart.length === 0) {
                 container.innerHTML = `
                     <div class="empty-cart">
@@ -595,7 +512,6 @@
 
             let total = 0;
             let html = '<div class="cart-items-list">';
-
             cart.forEach((item, index) => {
                 total += item.price;
                 html += `
@@ -646,16 +562,21 @@
             }
         }
 
+        // ============= SIMULACION FINALIZAR COMPRA =============
         function checkout() {
             if (cart.length === 0) {
                 alert('El cistell està buit!');
                 return;
             }
-            alert('Redirigint a la pàgina de pagament...');
+            document.getElementById('checkoutPopup').style.display = 'flex';
+        }
+        function closeCheckoutPopup() {
+            document.getElementById('checkoutPopup').style.display = 'none';
         }
 
         // INICIAR
         renderProducts();
     </script>
 </body>
+
 </html>
