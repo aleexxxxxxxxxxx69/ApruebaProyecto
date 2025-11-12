@@ -2,96 +2,108 @@
 <html lang="ca">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ShinyWeb - Joieria Online</title>
-  <link rel="stylesheet" href="estiloo.css"/>
+  <link rel="stylesheet" href="estiloo.css" />
+    <!-- LIBRERÍAS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+  <!-- SCRIPTS -->
+  <script src="js/productos.js"></script>
+  <script src="js/visor3d.js"></script>
+  <script src="js/carrito.js"></script>
+  <script src="js/modales.js"></script>
+  <script src="js/main.js"></script>
 </head>
 <body>
   <!-- HEADER -->
   <header>
     <div class="header-content">
       <div class="logo-title-container">
-        <img src="models/logo-shinyweb.png" alt="ShinyWeb Logo" class="header-logo"/>
+        <img src="models/logo-shinyweb.png" alt="ShinyWeb Logo" class="header-logo" />
         <h1>ShinyWeb</h1>
       </div>
-
       <div class="search-wrapper">
         <input type="text" id="searchInput" placeholder="Cercar joies..." />
+        <button class="cart-btn" onclick="toggleCart()">
+          <span class="cart-text">Cistell</span>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
       </div>
-
-      <button class="cart-btn" id="cartBtn">
-        <span class="cart-text">Cistell</span>
-        <span class="cart-count" id="cartCount">0</span>
-      </button>
     </div>
   </header>
 
   <!-- NAV -->
   <nav>
     <div class="nav-content">
-      <a class="nav-btn active" href="index.html">Tots</a>
-      <a class="nav-btn" href="categorias.html?cat=anells">Anells</a>
-      <a class="nav-btn" href="categorias.html?cat=arracades">Arracades</a>
-      <a class="nav-btn" href="categorias.html?cat=polseres">Polseres</a>
+      <button class="nav-btn active" onclick="filterCategory('tots')">Tots</button>
+      <button class="nav-btn" onclick="filterCategory('anells')">Anells</button>
+      <button class="nav-btn" onclick="filterCategory('arracades')">Arracades</button>
+      <button class="nav-btn" onclick="filterCategory('polseres')">Polseres</button>
     </div>
   </nav>
 
-  <!-- GRID -->
+  <!-- PRODUCTES -->
   <main>
     <div class="products-grid" id="productsGrid"></div>
   </main>
 
-  <!-- MODAL PRODUCTE -->
-  <div class="product-modal" id="productModal">
-    <div class="product-modal-content">
-      <button class="close-modal" id="closeProductModal">×</button>
+  <!-- MODAL DETALL PRODUCTE -->
+  <div class="product-modal" id="productModal" onclick="closeProductModal(event)">
+    <div class="product-modal-content" onclick="event.stopPropagation()">
+      <button class="close-modal" onclick="closeProductModal(event)">×</button>
       <div class="product-modal-body">
-        <div class="product-modal-3d">
-          <div id="modalThumb" class="modal-thumb"></div>
-        </div>
+        <div class="product-modal-3d" id="productModal3D"></div>
         <div class="product-modal-info">
           <div class="product-modal-badge">NOU</div>
-          <h2 id="modalName" class="modal-product-name"></h2>
-          <p id="modalDesc" class="modal-product-description"></p>
-          <div id="modalPrice" class="modal-product-price"></div>
+          <h2 id="modalProductName" class="modal-product-name"></h2>
+          <p id="modalProductDescription" class="modal-product-description"></p>
+          <div id="modalProductPrice" class="modal-product-price"></div>
           <div class="modal-product-features">
-            <div class="feature-item"><span class="feature-icon">✓</span><span>Enviament gratuït</span></div>
-            <div class="feature-item"><span class="feature-icon">✓</span><span>Garantia de 2 anys</span></div>
-            <div class="feature-item"><span class="feature-icon">✓</span><span>Certificat d'autenticitat</span></div>
+            <div class="feature-item"><span class="feature-icon"></span>Enviament gratuït</div>
+            <div class="feature-item"><span class="feature-icon"></span>Garantia de 2 anys</div>
+            <div class="feature-item"><span class="feature-icon"></span>Certificat d'autenticitat</div>
           </div>
-          <button class="modal-add-to-cart" id="modalAddBtn"><span class="btn-text">Afegir al Cistell</span></button>
+          <button class="modal-add-to-cart" id="modalAddToCart"><span class="btn-text">Afegir al Cistell</span></button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- MODAL CISTELL -->
-  <div class="cart-modal" id="cartModal">
-    <div class="cart-content">
+  <div class="cart-modal" id="cartModal" onclick="closeCartOutside(event)">
+    <div class="cart-content" onclick="event.stopPropagation()">
       <div class="cart-header">
         <h2>El Teu Cistell</h2>
-        <button class="close-cart" id="closeCart">×</button>
+        <button class="close-cart" onclick="toggleCart()">×</button>
       </div>
       <div id="cartItems"></div>
       <div class="cart-actions">
-        <button class="checkout-btn" id="checkoutBtn">Finalitzar Compra</button>
-        <button class="clear-cart-btn" id="clearCartBtn">Buidar Cistell</button>
+        <button class="checkout-btn" onclick="checkout()">Finalitzar Compra</button>
+        <button class="clear-cart-btn" onclick="clearCart()">Buidar Cistell</button>
       </div>
     </div>
   </div>
 
-  <!-- POPUP COMPRA -->
-  <div class="checkout-popup" id="checkoutPopup" style="display:none;">
-    <div class="popup-card">
+  <!-- POPUP COMPRA FINALITZADA -->
+  <div class="checkout-popup" id="checkoutPopup" style="display: none;">
+    <div>
       <h2>Compra finalitzada!</h2>
-      <p>Gràcies per confiar en ShinyWeb.<br/>Rebràs un correu amb els detalls de la teva compra.</p>
-      <button id="closeCheckout">Acceptar</button>
+      <p>Gràcies per confiar en ShinyWeb.<br>Rebràs un correu amb els detalls de la teva compra.</p>
+      <button onclick="closeCheckoutPopup()">Acceptar</button>
     </div>
   </div>
 
+  <!-- LIBRERÍAS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
   <!-- SCRIPTS -->
-  <script src="JS/data.js"></script>
-  <script src="JS/comun.js"></script>
-  <script src="JS/index.js"></script>
+  <script src="js/productos.js"></script>
+  <script src="js/visor3d.js"></script>
+  <script src="js/carrito.js"></script>
+  <script src="js/modales.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
