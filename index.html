@@ -1,109 +1,138 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ShinyWeb - Joieria Online</title>
-  <link rel="stylesheet" href="estiloo.css" />
-    <!-- LIBRERÍAS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-
-  <!-- SCRIPTS -->
-  <script src="js/productos.js"></script>
-  <script src="js/visor3d.js"></script>
-  <script src="js/carrito.js"></script>
-  <script src="js/modales.js"></script>
-  <script src="js/main.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShinyWeb - Joyería 3D Interactiva</title>
+    <link rel="stylesheet" href="css.css">
 </head>
 <body>
-  <!-- HEADER -->
-  <header>
-    <div class="header-content">
-      <div class="logo-title-container">
-        <img src="models/logo-shinyweb.png" alt="ShinyWeb Logo" class="header-logo" />
-        <h1>ShinyWeb</h1>
-      </div>
-      <div class="search-wrapper">
-        <input type="text" id="searchInput" placeholder="Cercar joies..." />
-        <button class="cart-btn" onclick="toggleCart()">
-          <span class="cart-text">Cistell</span>
-          <span class="cart-count" id="cartCount">0</span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- NAV -->
-  <nav>
-    <div class="nav-content">
-      <button class="nav-btn active" onclick="filterCategory('tots')">Tots</button>
-      <button class="nav-btn" onclick="filterCategory('anells')">Anells</button>
-      <button class="nav-btn" onclick="filterCategory('arracades')">Arracades</button>
-      <button class="nav-btn" onclick="filterCategory('polseres')">Polseres</button>
-    </div>
-  </nav>
-
-  <!-- PRODUCTES -->
-  <main>
-    <div class="products-grid" id="productsGrid"></div>
-  </main>
-
-  <!-- MODAL DETALL PRODUCTE -->
-  <div class="product-modal" id="productModal" onclick="closeProductModal(event)">
-    <div class="product-modal-content" onclick="event.stopPropagation()">
-      <button class="close-modal" onclick="closeProductModal(event)">×</button>
-      <div class="product-modal-body">
-        <div class="product-modal-3d" id="productModal3D"></div>
-        <div class="product-modal-info">
-          <div class="product-modal-badge">NOU</div>
-          <h2 id="modalProductName" class="modal-product-name"></h2>
-          <p id="modalProductDescription" class="modal-product-description"></p>
-          <div id="modalProductPrice" class="modal-product-price"></div>
-          <div class="modal-product-features">
-            <div class="feature-item"><span class="feature-icon"></span>Enviament gratuït</div>
-            <div class="feature-item"><span class="feature-icon"></span>Garantia de 2 anys</div>
-            <div class="feature-item"><span class="feature-icon"></span>Certificat d'autenticitat</div>
-          </div>
-          <button class="modal-add-to-cart" id="modalAddToCart"><span class="btn-text">Afegir al Cistell</span></button>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>✨ ShinyWeb</h1>
+                <p class="tagline">Joyas en 3D</p>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Inicio</a></li>
+                <li><a href="#anillos">Anillos</a></li>
+                <li><a href="#pulseras">Pulseras</a></li>
+                <li><a href="#pendientes">Pendientes</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <a href="login.html" class="btn-login">
+                    <span class="icon">👤</span>
+                    Login
+                </a>
+                <a href="carrito.html" class="btn-cart">
+                    <span class="icon">🛒</span>
+                    Carrito
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
+    </nav>
 
-  <!-- MODAL CISTELL -->
-  <div class="cart-modal" id="cartModal" onclick="closeCartOutside(event)">
-    <div class="cart-content" onclick="event.stopPropagation()">
-      <div class="cart-header">
-        <h2>El Teu Cistell</h2>
-        <button class="close-cart" onclick="toggleCart()">×</button>
-      </div>
-      <div id="cartItems"></div>
-      <div class="cart-actions">
-        <button class="checkout-btn" onclick="checkout()">Finalitzar Compra</button>
-        <button class="clear-cart-btn" onclick="clearCart()">Buidar Cistell</button>
-      </div>
-    </div>
-  </div>
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Descubre Nuestras Joyas en 3D</h2>
+            <p>Explora, rota y visualiza cada detalle de nuestras exclusivas piezas</p>
+            
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar joyas (anillo, pulsera, pendiente)...">
+            </div>
+        </div>
+    </section>
 
-  <!-- POPUP COMPRA FINALITZADA -->
-  <div class="checkout-popup" id="checkoutPopup" style="display: none;">
-    <div>
-      <h2>Compra finalitzada!</h2>
-      <p>Gràcies per confiar en ShinyWeb.<br>Rebràs un correu amb els detalls de la teva compra.</p>
-      <button onclick="closeCheckoutPopup()">Acceptar</button>
-    </div>
-  </div>
+    <main class="products-container">
+        <section id="anillos" class="category-section">
+            <h2 class="category-title">Anillos</h2>
+            <div class="products-grid">
+                <div class="product-card" data-id="1" data-category="anillos" data-name="anillo elegance">
+                    <div class="product-viewer" id="viewer-anillo1"></div>
+                    <div class="product-info">
+                        <h3>Anillo Elegance</h3>
+                        <p class="price">349.99 €</p>
+                        <button class="btn-view" onclick="viewProduct(1)">Ver Detalles</button>
+                        <button class="btn-add-cart" onclick="addToCart(1)">Añadir al Carrito</button>
+                    </div>
+                </div>
 
-  <!-- LIBRERÍAS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+                <div class="product-card" data-id="2" data-category="anillos" data-name="anillo royal">
+                    <div class="product-viewer" id="viewer-anillo2"></div>
+                    <div class="product-info">
+                        <h3>Anillo Royal</h3>
+                        <p class="price">429.99 €</p>
+                        <button class="btn-view" onclick="viewProduct(2)">Ver Detalles</button>
+                        <button class="btn-add-cart" onclick="addToCart(2)">Añadir al Carrito</button>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <!-- SCRIPTS -->
-  <script src="js/productos.js"></script>
-  <script src="js/visor3d.js"></script>
-  <script src="js/carrito.js"></script>
-  <script src="js/modales.js"></script>
-  <script src="js/main.js"></script>
+        <section id="pulseras" class="category-section">
+            <h2 class="category-title">Pulseras</h2>
+            <div class="products-grid">
+                <div class="product-card" data-id="3" data-category="pulseras" data-name="pulsera sparkle">
+                    <div class="product-viewer" id="viewer-pulsera1"></div>
+                    <div class="product-info">
+                        <h3>Pulsera Sparkle</h3>
+                        <p class="price">289.99 €</p>
+                        <button class="btn-view" onclick="viewProduct(3)">Ver Detalles</button>
+                        <button class="btn-add-cart" onclick="addToCart(3)">Añadir al Carrito</button>
+                    </div>
+                </div>
+
+                <div class="product-card" data-id="4" data-category="pulseras" data-name="pulsera diamond">
+                    <div class="product-viewer" id="viewer-pulsera2"></div>
+                    <div class="product-info">
+                        <h3>Pulsera Diamond</h3>
+                        <p class="price">389.99 €</p>
+                        <button class="btn-view" onclick="viewProduct(4)">Ver Detalles</button>
+                        <button class="btn-add-cart" onclick="addToCart(4)">Añadir al Carrito</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pendientes" class="category-section">
+            <h2 class="category-title">Pendientes</h2>
+            <div class="products-grid">
+                <div class="product-card" data-id="5" data-category="pendientes" data-name="pendientes shine">
+                    <div class="product-viewer" id="viewer-pendiente1"></div>
+                    <div class="product-info">
+                        <h3>Pendientes Shine</h3>
+                        <p class="price">259.99 €</p>
+                        <button class="btn-view" onclick="viewProduct(5)">Ver Detalles</button>
+                        <button class="btn-add-cart" onclick="addToCart(5)">Añadir al Carrito</button>
+                    </div>
+                </div>
+
+                <div class="product-card" data-id="6" data-category="pendientes" data-name="pendientes luxury">
+                    <div class="product-viewer" id="viewer-pendiente2"></div>
+                    <div class="product-info">
+                        <h3>Pendientes Luxury</h3>
+                        <p class="price">329.99 €</p>
+                        <button class="btn-view" onclick="viewProduct(6)">Ver Detalles</button>
+                        <button class="btn-add-cart" onclick="addToCart(6)">Añadir al Carrito</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 ShinyWeb - David Vargas, Alex Garcia, Pau Ferrer</p>
+        <p>Proyecto Intermodular 2º DAW</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="cart.js"></script>
+    <script src="viewer3D.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
