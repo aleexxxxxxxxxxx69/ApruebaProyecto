@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito - ShinyWeb</title>
     <link rel="stylesheet" href="css.css">
+
+    <!-- model-viewer -->
+    <script type="module"
+      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+    </script>
 </head>
 <body>
     <nav class="navbar">
@@ -25,25 +30,30 @@
 
     <main class="cart-container">
         <h1>Mi Carrito</h1>
+
         <div class="cart-content">
             <div class="cart-items" id="cartItems">
-                <!-- Aquí se mostrará el mensaje de vacío o la lista de productos -->
+                <!-- Items generados dinámicamente -->
             </div>
 
             <div class="cart-summary">
                 <h2>Resumen del Pedido</h2>
+
                 <div class="summary-line">
                     <span>Subtotal</span>
                     <span id="subtotal">0.00 €</span>
                 </div>
+
                 <div class="summary-line">
                     <span>Envío</span>
                     <span>GRATIS</span>
                 </div>
+
                 <div class="summary-line total">
                     <span>Total</span>
                     <span id="total">0.00 €</span>
                 </div>
+
                 <button class="btn-checkout" onclick="checkout()">Finalizar Compra</button>
             </div>
         </div>
