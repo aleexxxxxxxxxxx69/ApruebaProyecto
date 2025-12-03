@@ -13,7 +13,6 @@
                 <h1>✨ ShinyWeb</h1>
                 <p class="tagline">Joyas en 3D</p>
             </div>
-            
             <ul class="nav-menu">
                 <li><a href="index.html" class="active">Inicio</a></li>
                 <li><a href="#anillos">Anillos</a></li>
@@ -39,7 +38,6 @@
         <div class="hero-content">
             <h2>Descubre Nuestras Joyas en 3D</h2>
             <p>Explora, rota y visualiza cada detalle de nuestras exclusivas piezas</p>
-            
             <div class="search-container">
                 <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar joyas (anillo, pulsera, pendiente)...">
             </div>
@@ -47,6 +45,13 @@
     </section>
 
     <main class="products-container">
+        <!-- Bloque resultados vacíos -->
+        <div class="no-results" id="noResults" style="display:none;">
+            <img src="image.jpg" alt="No se encontraron resultados" class="dynamic-image" />
+            <h2><span style="font-size:1.5rem;">😔</span> No se encontraron resultados</h2>
+            <p>Intenta buscar: <b>"anillo"</b>, <b>"pulsera"</b> o <b>"pendiente"</b></p>
+        </div>
+
         <section id="anillos" class="category-section">
             <h2 class="category-title">Anillos</h2>
             <div class="products-grid">
@@ -56,7 +61,9 @@
                         <h3>Anillo Elegance</h3>
                         <p class="price">349.99 €</p>
                         <button class="btn-view" onclick="viewProduct(1)">Ver Detalles</button>
-                        <button class="btn-add-cart" onclick="addToCart(1)">Añadir al Carrito</button>
+                        <button class="btn-add-cart" onclick="addToCart(1, 'Anillo Elegance', 349.99, 'image.jpg')">
+                            Añadir al Carrito
+                        </button>
                     </div>
                 </div>
 
@@ -66,7 +73,9 @@
                         <h3>Anillo Royal</h3>
                         <p class="price">429.99 €</p>
                         <button class="btn-view" onclick="viewProduct(2)">Ver Detalles</button>
-                        <button class="btn-add-cart" onclick="addToCart(2)">Añadir al Carrito</button>
+                        <button class="btn-add-cart" onclick="addToCart(2, 'Anillo Royal', 429.99, 'image.jpg')">
+                            Añadir al Carrito
+                        </button>
                     </div>
                 </div>
             </div>
@@ -81,7 +90,9 @@
                         <h3>Pulsera Sparkle</h3>
                         <p class="price">289.99 €</p>
                         <button class="btn-view" onclick="viewProduct(3)">Ver Detalles</button>
-                        <button class="btn-add-cart" onclick="addToCart(3)">Añadir al Carrito</button>
+                        <button class="btn-add-cart" onclick="addToCart(3, 'Pulsera Sparkle', 289.99, 'image.jpg')">
+                            Añadir al Carrito
+                        </button>
                     </div>
                 </div>
 
@@ -91,7 +102,9 @@
                         <h3>Pulsera Diamond</h3>
                         <p class="price">389.99 €</p>
                         <button class="btn-view" onclick="viewProduct(4)">Ver Detalles</button>
-                        <button class="btn-add-cart" onclick="addToCart(4)">Añadir al Carrito</button>
+                        <button class="btn-add-cart" onclick="addToCart(4, 'Pulsera Diamond', 389.99, 'image.jpg')">
+                            Añadir al Carrito
+                        </button>
                     </div>
                 </div>
             </div>
@@ -106,7 +119,9 @@
                         <h3>Pendientes Shine</h3>
                         <p class="price">259.99 €</p>
                         <button class="btn-view" onclick="viewProduct(5)">Ver Detalles</button>
-                        <button class="btn-add-cart" onclick="addToCart(5)">Añadir al Carrito</button>
+                        <button class="btn-add-cart" onclick="addToCart(5, 'Pendientes Shine', 259.99, 'image.jpg')">
+                            Añadir al Carrito
+                        </button>
                     </div>
                 </div>
 
@@ -116,7 +131,9 @@
                         <h3>Pendientes Luxury</h3>
                         <p class="price">329.99 €</p>
                         <button class="btn-view" onclick="viewProduct(6)">Ver Detalles</button>
-                        <button class="btn-add-cart" onclick="addToCart(6)">Añadir al Carrito</button>
+                        <button class="btn-add-cart" onclick="addToCart(6, 'Pendientes Luxury', 329.99, 'image.jpg')">
+                            Añadir al Carrito
+                        </button>
                     </div>
                 </div>
             </div>

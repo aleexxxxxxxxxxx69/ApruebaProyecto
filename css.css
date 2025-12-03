@@ -4,8 +4,10 @@
     --beige-medium: #e8dcc4;
     --brown-accent: #8b7355;
     --gold: #d4af37;
+    --gold-soft: #e3c86a;
     --text-dark: #2c2416;
     --white: #ffffff;
+    --error: #e74c3c;
 }
 
 /* Reset básico */
@@ -17,19 +19,39 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: var(--beige-light);
+    background: radial-gradient(circle at top left, #fdf7ed 0%, var(--beige-light) 40%, #efe2cc 100%);
     color: var(--text-dark);
+    min-height: 100vh;
+}
+
+/* Transiciones globales suaves */
+a,
+button,
+input,
+.product-card,
+.login-box,
+.cart-summary,
+.cart-items {
+    transition: all 0.25s ease;
 }
 
 /* ----- NAVBAR ----- */
-
 .navbar {
-    background-color: var(--white);
+    background-color: rgba(255, 255, 255, 0.96);
     border-bottom: 1px solid var(--beige-medium);
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 20;
     padding: 0.8rem 0;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+    transition: box-shadow 0.35s ease, background-color 0.35s ease, transform 0.3s ease;
+}
+
+/* ligero efecto cuando nos movemos por la página */
+body:hover .navbar {
+    box-shadow: 0 10px 28px rgba(0,0,0,0.09);
+    transform: translateY(-1px);
 }
 
 .nav-container {
@@ -39,16 +61,25 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1.2rem;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
 }
 
 .logo h1 {
     color: var(--brown-accent);
-    font-size: 1.6rem;
+    font-size: 1.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
 .tagline {
     font-size: 0.8rem;
     color: var(--gold);
+    letter-spacing: 0.12em;
 }
 
 .nav-menu {
@@ -63,10 +94,27 @@ body {
     padding: 0.4rem 0.8rem;
     border-radius: 4px;
     font-size: 0.95rem;
+    position: relative;
 }
 
-.nav-menu a:hover,
-.nav-menu a.active {
+.nav-menu a::after {
+    content: "";
+    position: absolute;
+    left: 0.8rem;
+    bottom: 0.25rem;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+    border-radius: 999px;
+    transition: width 0.25s ease;
+}
+
+.nav-menu a:hover::after,
+.nav-menu a.active::after {
+    width: calc(100% - 1.6rem);
+}
+
+.nav-menu a:hover {
     background-color: var(--beige-medium);
 }
 
@@ -79,11 +127,43 @@ body {
 .btn-cart,
 .btn-back {
     text-decoration: none;
-    background-color: var(--brown-accent);
+    background: linear-gradient(135deg, var(--brown-accent), #5f4933);
     color: var(--white);
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
+    padding: 0.55rem 1.1rem;
+    border-radius: 999px;
     font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-login::before,
+.btn-cart::before,
+.btn-back::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -30%;
+    width: 40%;
+    height: 200%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+    transform: translateX(-120%);
+    transition: transform 0.45s ease;
+}
+
+.btn-login:hover::before,
+.btn-cart:hover::before,
+.btn-back:hover::before {
+    transform: translateX(260%);
+}
+
+.btn-login:hover,
+.btn-cart:hover,
+.btn-back:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
 }
 
 .cart-count {
@@ -95,53 +175,141 @@ body {
 }
 
 /* ----- HERO / BUSCADOR ----- */
-
 .hero {
-    background-color: var(--beige-medium);
-    padding: 2rem 1rem;
+    background: radial-gradient(circle at 0 0, #fff7df 0%, var(--beige-medium) 40%, var(--beige-light) 100%);
+    padding: 2.2rem 1rem;
     text-align: center;
     margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    will-change: transform;
+    transition: transform 0.4s ease-out;
+}
+
+/* leve efecto cuando nos movemos por la página */
+body:hover .hero {
+    transform: translateY(-2px);
+}
+
+.hero::before,
+.hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(20px);
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.hero::before {
+    width: 180px;
+    height: 180px;
+    background: rgba(212,175,55,0.25);
+    top: -40px;
+    right: 15%;
+}
+
+.hero::after {
+    width: 140px;
+    height: 140px;
+    background: rgba(139,115,85,0.2);
+    bottom: -30px;
+    left: 10%;
 }
 
 .hero-content h2 {
-    font-size: 2rem;
+    font-size: 2.1rem;
     margin-bottom: 0.5rem;
+    letter-spacing: 0.06em;
+    animation: fadeInSlideDown 1s ease forwards;
+    position: relative;
+}
+
+.hero-content h2::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -0.6rem;
+    width: 120px;
+    height: 3px;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(212,175,55,0.9), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.hero-content h2:hover::after {
+    opacity: 1;
 }
 
 .hero-content p {
     font-size: 1rem;
     color: var(--brown-accent);
+    animation: fadeInSlideUp 1.3s ease forwards;
 }
 
 .search-container {
-    margin-top: 1.5rem;
+    margin-top: 1.6rem;
     display: flex;
     justify-content: center;
 }
 
 .search-input {
     width: 100%;
-    max-width: 500px;
-    padding: 0.8rem 1rem;
+    max-width: 520px;
+    padding: 0.85rem 1rem;
     border-radius: 25px;
-    border: 1px solid var(--gold);
-    font-size: 0.95rem;
+    border: 1.5px solid var(--gold);
+    font-size: 1.08rem;
+    font-weight: 500;
+    background-color: #fffdfa;
+    padding-left: 2.4rem;
+    text-shadow: 0 2px 10px rgba(212,175,55,0.05);
+    box-shadow: 0 4px 12px rgba(212,175,55,0.09);
+    transition: box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: #b9a886;
+    font-weight: 500;
+    opacity: 0.85;
+    text-shadow: 0 0 4px #d4af37;
+    transition: opacity 0.3s ease;
+}
+
+.search-input:focus::placeholder,
+.search-input:not(:placeholder-shown)::placeholder {
+    opacity: 0.3;
+}
+
+.search-input:focus,
+.search-input:not(:placeholder-shown) {
+    color: var(--brown-accent);
+    background-color: #fffefa;
+    border-color: var(--gold);
+    font-weight: 600;
+    text-shadow: 0 2px 16px rgba(212,175,55,0.13);
+    animation: inputGlowPulse 2s ease-in-out infinite;
 }
 
 /* ----- LISTADO DE PRODUCTOS ----- */
-
 .products-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 1.5rem 1rem;
+    animation: fadeIn 0.8s ease forwards;
 }
 
 .category-section {
-    margin-bottom: 2rem;
+    margin-bottom: 2.2rem;
+    transition: opacity 0.45s ease, transform 0.45s ease;
 }
 
 .category-section.hidden {
     display: none;
+    opacity: 0;
+    transform: translateY(10px);
 }
 
 .category-title {
@@ -149,6 +317,40 @@ body {
     font-size: 1.5rem;
     color: var(--brown-accent);
     margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    position: relative;
+}
+
+/* línea dorada decorativa */
+.category-title::after {
+    content: "";
+    display: block;
+    margin: 0.4rem auto 0;
+    width: 60px;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* pequeño brillo lineal desplazándose */
+.category-title::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -40%;
+    width: 30%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(212,175,55,0.8), transparent);
+    transform: translateX(0) translateY(-50%);
+    border-radius: 999px;
+    animation: shimmer 2.8s linear infinite;
+    opacity: 0.7;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%) translateY(-50%); }
+    100% { transform: translateX(400%) translateY(-50%); }
 }
 
 .products-grid {
@@ -157,11 +359,45 @@ body {
     gap: 1.5rem;
 }
 
+/* tarjetas flotando suave con sombra doble */
+@keyframes float-card {
+    0%, 100% { transform: translateY(0); box-shadow: 0 8px 20px rgba(0,0,0,0.04), 0 0 14px rgba(212,175,55,0.1); }
+    50% { transform: translateY(-6px); box-shadow: 0 14px 26px rgba(0,0,0,0.08), 0 0 25px rgba(212,175,55,0.3); }
+}
+
 .product-card {
     background-color: var(--white);
     border-radius: 10px;
     padding: 1rem;
     border: 1px solid var(--beige-medium);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.04), 0 0 14px rgba(212,175,55,0.1);
+    position: relative;
+    overflow: hidden;
+    animation: fadeInScale 0.5s ease forwards;
+    cursor: pointer;
+}
+
+.product-card:hover {
+    animation: float-card 2.8s ease-in-out infinite;
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 14px 26px rgba(0,0,0,0.1), 0 0 30px rgba(212,175,55,0.45);
+}
+
+/* destello discreto en esquina */
+.product-card::before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, rgba(212,175,55,0.5), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-card:hover::before {
+    opacity: 0.9;
 }
 
 .product-card.hidden {
@@ -171,9 +407,27 @@ body {
 .product-viewer {
     width: 100%;
     height: 220px;
-    background-color: var(--beige-light);
+    background: radial-gradient(circle at 30% 20%, #fffaf0 0%, var(--beige-light) 50%, #e2d4bc 100%);
     border-radius: 8px;
     margin-bottom: 0.8rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* halo giratorio muy suave alrededor de los modelos */
+.product-viewer::after {
+    content: "";
+    position: absolute;
+    inset: 12px;
+    border-radius: inherit;
+    border: 1px dashed rgba(212,175,55,0.4);
+    opacity: 0.5;
+    animation: rotate-halo 16s linear infinite;
+}
+
+@keyframes rotate-halo {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 .product-info {
@@ -183,67 +437,85 @@ body {
 .product-info h3 {
     font-size: 1.2rem;
     margin-bottom: 0.3rem;
+    animation: fadeInSlideUp 0.6s ease forwards;
 }
 
 .price {
     font-size: 1.4rem;
     color: var(--gold);
     margin-bottom: 0.8rem;
+    font-weight: bold;
 }
 
+/* botones de producto */
 .btn-view,
 .btn-add-cart {
     padding: 0.6rem 1rem;
-    border-radius: 20px;
+    border-radius: 999px;
     border: none;
     font-size: 0.9rem;
     cursor: pointer;
     margin: 0.2rem;
-}
-
-.btn-view {
-    background-color: var(--beige-medium);
-}
-
-.btn-add-cart {
-    background-color: var(--gold);
-}
-
-/* ----- MENSAJE SIN RESULTADOS ----- */
-
-.no-results {
-    max-width: 500px;
-    margin: 2rem auto;
-    text-align: center;
-    background-color: var(--white);
-    padding: 1.5rem;
-    border-radius: 10px;
-    border: 1px solid var(--beige-medium);
+    position: relative;
+    overflow: hidden;
+    will-change: transform;
 }
 
 /* ----- LOGIN ----- */
-
 .login-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 70vh;
     padding: 1.5rem;
+    position: relative;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+body:hover .login-container {
+    transform: translateY(-2px);
+}
+
+.login-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 20%, rgba(212,175,55,0.18), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139,115,85,0.2), transparent 45%);
+    opacity: 0.9;
+    pointer-events: none;
 }
 
 .login-box {
-    background-color: var(--white);
-    padding: 2rem;
-    border-radius: 10px;
+    position: relative;
+    background-color: rgba(255,255,255,0.98);
+    padding: 2.1rem 2rem;
+    border-radius: 14px;
     max-width: 400px;
     width: 100%;
-    border: 1px solid var(--beige-medium);
+    border: 1px solid rgba(232,220,196,0.9);
+    box-shadow: 0 14px 32px rgba(0,0,0,0.12);
+    overflow: hidden;
+    animation: fadeInScale 0.6s ease forwards;
+}
+
+.login-box::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -40%;
+    width: 180%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
 .login-box h2 {
     text-align: center;
     color: var(--brown-accent);
     margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 1rem;
 }
 
 .form-group {
@@ -258,21 +530,62 @@ body {
 
 .form-group input {
     width: 100%;
-    padding: 0.6rem;
-    border-radius: 5px;
+    padding: 0.65rem 0.75rem;
+    border-radius: 999px;
     border: 1px solid var(--beige-medium);
+    background-color: #fbf7f0;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
+.form-group input:focus {
+    outline: none;
+    border-color: var(--gold-soft);
+    box-shadow: 0 0 12px rgba(212,175,55,0.6),
+                0 2px 20px rgba(139,115,85,0.35);
+}
+
+/* botón login */
 .btn-login-submit {
     width: 100%;
-    padding: 0.8rem;
-    border-radius: 20px;
+    padding: 0.85rem;
+    border-radius: 999px;
     border: none;
-    background-color: var(--gold);
     color: var(--text-dark);
     font-weight: bold;
     cursor: pointer;
-    margin-top: 0.5rem;
+    margin-top: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    position: relative;
+    overflow: hidden;
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.btn-login-submit::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 10% 0, rgba(255,255,255,0.7), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.btn-login-submit:hover::after {
+    opacity: 1;
+}
+
+.btn-login-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(212,175,55,0.38);
+}
+
+.login-security-note {
+    margin-top: 0.7rem;
+    font-size: 0.78rem;
+    color: var(--brown-accent);
+    text-align: center;
+    opacity: 0.8;
 }
 
 .form-footer {
@@ -283,14 +596,44 @@ body {
 
 .form-footer a {
     color: var(--gold);
+    position: relative;
+    text-decoration: none;
+}
+
+.form-footer a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+    transition: width 0.25s ease;
+    border-radius: 999px;
+}
+
+.form-footer a:hover::after {
+    width: 100%;
+}
+
+.login-error {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--error);
+    text-align: center;
 }
 
 /* ----- DETALLE PRODUCTO ----- */
-
 .product-detail-container {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 1rem;
+    animation: fadeIn 0.7s ease forwards;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+body:hover .product-detail-container {
+    transform: translateY(-2px);
 }
 
 .product-detail-grid {
@@ -299,26 +642,68 @@ body {
     gap: 2rem;
     background-color: var(--white);
     padding: 1.5rem;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid var(--beige-medium);
+    box-shadow: 0 12px 26px rgba(0,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+/* efecto brillo animado diagonal suave */
+.product-detail-grid::before {
+    content: "";
+    position: absolute;
+    top: -120%;
+    left: -50%;
+    width: 200%;
+    height: 300%;
+    background: linear-gradient(120deg, transparent 35%, rgba(212,175,55,0.15) 50%, transparent 65%);
+    animation: shimmer-slow 6s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes shimmer-slow {
+    0% { transform: translateX(-100%) translateY(0); }
+    100% { transform: translateX(100%) translateY(0); }
 }
 
 .product-detail-viewer {
     width: 100%;
     height: 400px;
-    background-color: var(--beige-light);
-    border-radius: 8px;
+    background: radial-gradient(circle at 30% 15%, #fffaf2 0%, var(--beige-light) 45%, #e2d4bc 100%);
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+    box-shadow: 0 0 16px 2px rgba(212,175,55,0.3);
+}
+
+.product-detail-viewer::before {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    border-radius: inherit;
+    border: 1px solid rgba(212,175,55,0.5);
+}
+
+.product-detail-info {
+    position: relative;
+    z-index: 3;
 }
 
 .product-detail-info h1 {
     font-size: 2rem;
     margin-bottom: 0.8rem;
+    animation: fadeInSlideUp 0.7s ease forwards;
 }
 
 .product-price {
     font-size: 2rem;
     color: var(--gold);
     margin-bottom: 1rem;
+    font-weight: 700;
+    animation: fadeInSlideUp 0.85s ease forwards;
 }
 
 .product-description,
@@ -331,6 +716,7 @@ body {
     font-size: 1.1rem;
     color: var(--brown-accent);
     margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
 }
 
 .product-features ul {
@@ -341,6 +727,20 @@ body {
 
 .product-features li {
     margin-bottom: 0.4rem;
+    position: relative;
+    padding-left: 1.4rem;
+    animation: fadeInLeft 0.5s ease forwards;
+}
+
+/* bullet con pequeño diamante dorado */
+.product-features li::before {
+    content: "◆";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 0.7rem;
+    color: var(--gold);
+    transform: translateY(0.25rem);
 }
 
 .product-actions {
@@ -353,35 +753,69 @@ body {
 .btn-buy-now {
     flex: 1;
     padding: 0.8rem;
-    border-radius: 20px;
+    border-radius: 999px;
     border: none;
     cursor: pointer;
     font-weight: bold;
     font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-add-cart-large {
-    background-color: var(--gold);
+    background: linear-gradient(135deg, var(--gold), var(--gold-soft));
     color: var(--text-dark);
+    box-shadow: 0 0 12px 0 rgba(212,175,55,0.35);
+    will-change: box-shadow, transform;
+    animation: pulse-glow 3s ease-in-out infinite;
 }
 
 .btn-buy-now {
-    background-color: var(--brown-accent);
+    background: linear-gradient(135deg, var(--brown-accent), #4b3825);
     color: var(--white);
+    box-shadow: 0 0 10px 0 rgba(139,115,85,0.2);
+}
+
+.btn-add-cart-large:hover,
+.btn-buy-now:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 28px rgba(212,175,55,0.45);
+    animation-play-state: paused;
 }
 
 /* ----- CARRITO ----- */
-
 .cart-container {
     max-width: 1100px;
     margin: 2rem auto;
     padding: 1rem;
+    animation: fadeIn 0.7s ease forwards;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+body:hover .cart-container {
+    transform: translateY(-1px);
 }
 
 .cart-container h1 {
     text-align: center;
     color: var(--brown-accent);
     margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    position: relative;
+}
+
+.cart-container h1::after {
+    content: "";
+    display: block;
+    margin: 0.5rem auto 0;
+    width: 80px;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    animation: shimmer 2.8s linear infinite;
 }
 
 .cart-content {
@@ -396,6 +830,14 @@ body {
     padding: 1.5rem;
     border-radius: 10px;
     border: 1px solid var(--beige-medium);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+/* animación al aparecer items del carrito */
+.cart-items {
+    animation: fadeInUp 0.7s ease forwards;
 }
 
 .cart-item {
@@ -403,6 +845,16 @@ body {
     gap: 1rem;
     padding: 1rem 0;
     border-bottom: 1px solid var(--beige-medium);
+    align-items: center;
+    position: relative;
+    transition: background-color 0.3s ease;
+    cursor: default;
+}
+
+.cart-item:hover {
+    background-color: #fff8db;
+    box-shadow: 0 0 12px rgba(212,175,55,0.25);
+    border-color: var(--gold);
 }
 
 .cart-item:last-child {
@@ -412,12 +864,19 @@ body {
 .cart-item-image {
     width: 80px;
     height: 80px;
-    background-color: var(--beige-light);
+    background: radial-gradient(circle at 30% 15%, #fff9ec 0%, var(--beige-light) 60%, #e2d4bc 100%);
     border-radius: 8px;
+    box-shadow: 0 0 12px 2px rgba(212,175,55,0.2);
+    transition: transform 0.3s ease;
+}
+
+.cart-item-image:hover {
+    transform: scale(1.1) rotate(3deg);
 }
 
 .cart-item-details {
     flex: 1;
+    user-select: none;
 }
 
 .cart-item-details h3 {
@@ -440,30 +899,58 @@ body {
 .quantity-controls button {
     width: 26px;
     height: 26px;
-    border-radius: 4px;
+    border-radius: 6px;
     border: none;
     background-color: var(--gold);
     cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.quantity-controls button:hover {
+    background-color: var(--gold-soft);
+    transform: translateY(-2px) scale(1.1);
+}
+
+.quantity-controls span {
+    min-width: 18px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--brown-accent);
+    transition: transform 0.18s ease, color 0.18s ease;
 }
 
 .cart-item-total {
     text-align: right;
     font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--brown-accent);
+    user-select: none;
 }
 
 .cart-item-remove {
     border: none;
-    background-color: #e74c3c;
+    background-color: var(--error);
     color: #fff;
     padding: 0.4rem 0.7rem;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 0.8rem;
+    transition: filter 0.3s ease, transform 0.2s ease;
+}
+
+.cart-item-remove:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px) scale(1.1);
+    box-shadow: 0 0 8px rgba(231, 76, 60, 0.6);
 }
 
 .cart-summary h2 {
     font-size: 1.3rem;
     margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--brown-accent);
 }
 
 .summary-line {
@@ -473,30 +960,56 @@ body {
     border-bottom: 1px solid var(--beige-medium);
 }
 
+.summary-line span:last-child {
+    transition: color 0.25s ease, transform 0.25s ease;
+}
+
 .summary-line.total {
     font-weight: bold;
     border-bottom: none;
+    font-size: 1.1rem;
+    color: var(--gold);
+    text-shadow: 0 0 6px rgba(212,175,55,0.6);
 }
 
+.summary-line.total span:last-child {
+    font-variant-numeric: tabular-nums;
+}
+
+/* botón checkout con efecto “pulso luminoso” muy leve */
 .btn-checkout {
     width: 100%;
     padding: 0.8rem;
-    border-radius: 20px;
+    border-radius: 999px;
     border: none;
-    background-color: var(--gold);
     color: var(--text-dark);
     font-weight: bold;
     margin-top: 1rem;
     cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    position: relative;
+    overflow: hidden;
+    animation: soft-pulse 2.4s ease-out infinite, checkoutGlow 3s ease-in-out infinite alternate;
+    box-shadow: 0 0 15px rgba(212,175,55,0.45);
+    font-size: 1rem;
+    font-family: 'Arial Black', Arial, sans-serif;
+}
+
+.btn-checkout:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 0 40px rgba(212,175,55,0.85);
 }
 
 .empty-cart {
     text-align: center;
     padding: 2rem 0;
+    opacity: 0.85;
+    font-style: italic;
+    color: var(--brown-accent);
 }
 
 /* ----- FOOTER ----- */
-
 .footer {
     background-color: var(--white);
     padding: 1rem;
@@ -508,23 +1021,612 @@ body {
 .footer p {
     font-size: 0.9rem;
     color: var(--brown-accent);
+    animation: fadeInUpFooter 1.8s cubic-bezier(.37,1.12,.91,.91);
+    letter-spacing: 0.04em;
 }
 
-/* ----- RESPONSIVE ----- */
+.footer a {
+    position: relative;
+    text-decoration: none;
+}
 
-@media (max-width: 768px) {
-    .nav-container {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
+.footer a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+    transition: width 0.25s ease;
+    border-radius: 999px;
+}
 
-    .nav-menu {
-        flex-direction: column;
-        align-items: center;
-    }
+.footer a:hover::after {
+    width: 100%;
+}
 
-    .cart-content,
-    .product-detail-grid {
-        grid-template-columns: 1fr;
+/* ----- ANIMACIONES GENERALES ----- */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeInSlideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-15px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 12px 4px rgba(212,175,55,0.4); }
+    50% { box-shadow: 0 0 18px 6px rgba(212,175,55,0.7); }
+}
+
+@keyframes soft-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.35); }
+    50% { box-shadow: 0 0 0 6px rgba(212,175,55,0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Más efectos para botones: hover con rebote y brillo radiante */
+.btn-login:hover,
+.btn-cart:hover,
+.btn-back:hover {
+    animation: bounceGlow 0.6s ease forwards;
+    box-shadow: 0 0 18px 4px rgba(212,175,55,0.65);
+}
+
+@keyframes bounceGlow {
+    0% { transform: translateY(0); box-shadow: 0 0 10px rgba(212,175,55,0.4); }
+    50% { transform: translateY(-6px) scale(1.05); box-shadow: 0 12px 28px rgba(212,175,55,0.85); }
+    100% { transform: translateY(0) scale(1); box-shadow: 0 0 18px 6px rgba(212,175,55,0.7); }
+}
+
+/* Botones de productos: glowing border on hover y sombras dinámicas */
+.btn-view:hover {
+    border: 2px solid var(--gold);
+    box-shadow: 0 6px 18px rgba(139,115,85,0.3);
+    font-weight: 700;
+    color: var(--brown-accent);
+    transform: scale(1.05);
+}
+
+.btn-add-cart:hover {
+    box-shadow: 0 0 40px 6px rgba(212,175,55,0.8);
+    text-shadow: 0 0 3px rgba(212,175,55,0.9);
+    transform: scale(1.1);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+/* Checkout botón efecto brillante dinámico muy perceptible */
+@keyframes checkoutGlow {
+    0% {
+        box-shadow: 0 0 15px 0 rgba(212,175,55,0.45);
+        text-shadow: 0 0 6px rgba(212,175,55,0.5);
     }
+    100% {
+        box-shadow: 0 0 40px 10px rgba(212,175,55,0.85);
+        text-shadow: 0 0 12px rgba(212,175,55,0.9);
+    }
+}
+
+/* Hover efecto en textos de títulos y subtítulos */
+.hero-content h2:hover,
+.category-title:hover,
+.product-info h3:hover,
+.product-detail-info h1:hover,
+.cart-container h1:hover {
+    text-shadow:
+        0 0 8px rgba(212,175,55,0.7),
+        0 0 15px rgba(212,175,55,0.6),
+        0 0 20px rgba(212,175,55,0.45);
+    cursor: pointer;
+    transition: text-shadow 0.35s ease;
+}
+
+/* Añadido efecto animado de brillo al cargar textos importantes */
+@keyframes textShimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.hero-content h2,
+.category-title,
+.product-info h3,
+.product-detail-info h1 {
+    background: linear-gradient(90deg, var(--gold-soft) 20%, var(--gold) 50%, var(--gold-soft) 80%);
+    background-size: 400%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: textShimmer 4s linear infinite;
+}
+
+/* efecto de brillo rápido en el input cuando se escribe */
+@keyframes inputGlowPulse {
+    0%, 100% { box-shadow: 0 0 5px 1px rgba(212,175,55,0.4); }
+    50% { box-shadow: 0 0 12px 3px rgba(212,175,55,0.7); }
+}
+
+/* Animación especial para imagen centrada tipo ilustración o mensaje */
+.dynamic-image {
+    display: block;
+    margin: 32px auto 0 auto;
+    max-width: 240px;
+    width: 90%;
+    border-radius: 18px;
+    box-shadow: 0 12px 40px rgba(212,175,55,0.15), 0 2px 30px rgba(139,115,85,0.10);
+    background: linear-gradient(130deg, #f5f0e8 55%, #fff9e3 100%);
+    transition: transform 0.5s cubic-bezier(.37,1.12,.91,.91), box-shadow 0.4s cubic-bezier(.45,.44,.21,.99);
+    animation: imageEntrance 1.2s cubic-bezier(.45,.44,.21,.99);
+}
+
+/* Entrada elástica/zoom desde fade */
+@keyframes imageEntrance {
+    0% { opacity: 0; transform: scale(0.86) translateY(24px); box-shadow: 0 2px 10px #d4af3735; }
+    80% { opacity: 1; transform: scale(1.08) translateY(-6px); box-shadow: 0 26px 80px #d4af373f; }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Hover: flotante y resplandor dorado */
+.dynamic-image:hover {
+    transform: scale(1.04) translateY(-8px) rotate(-2deg);
+    box-shadow: 0 24px 80px 0px rgba(212,175,55,0.28), 0 6px 40px rgba(139,115,85,0.12), 0 0 50px 10px #d4af3790;
+    animation: imageGlow 1.2s cubic-bezier(.36,.6,.18,.99);
+}
+
+/* Parpadeo suave dorado */
+@keyframes imageGlow {
+    0% { box-shadow: 0 24px 80px rgba(212,175,55,0.07); }
+    50% { box-shadow: 0 24px 80px 0px rgba(212,175,55,0.4), 0 0 70px #d4af3730; }
+    100% { box-shadow: 0 24px 80px 0px rgba(212,175,55,0.28), 0 6px 40px rgba(139,115,85,0.12); }
+}
+
+/* Mejoras UX para bloques como .no-results */
+.no-results {
+    box-shadow: 0 10px 48px rgba(212,175,55,0.09), 0 2px 24px rgba(139,115,85,0.07);
+    border: 1.5px solid var(--beige-medium);
+    border-radius: 14px;
+    position: relative;
+    animation: fadeBounceIn 1.2s cubic-bezier(.37,1.12,.91,.91);
+    transition: box-shadow 0.35s, border-color 0.35s;
+}
+
+/* entrada animada bounce/fade */
+@keyframes fadeBounceIn {
+    0% { opacity: 0; transform: scale(0.75) translateY(40px);}
+    50% { opacity: 1; transform: scale(1.06) translateY(-8px);}
+    100% { opacity: 1; transform: scale(1) translateY(0);}
+}
+
+/* Hover: borde y sombra reforzados */
+.no-results:hover {
+    box-shadow: 0 18px 70px 0px rgba(212,175,55,0.39), 0 0 80px #d4af3793;
+    border-color: var(--gold);
+}
+
+.no-results h2, .no-results h3, .no-results strong {
+    color: var(--brown-accent);
+    transition: color 0.3s;
+}
+.no-results:hover h2,
+.no-results:hover h3,
+.no-results:hover strong {
+    color: var(--gold);
+}
+
+/* Animación para avisos, badge, cantidades del carrito */
+.cart-count, .badge, .alert {
+    animation: popBounce 0.6s cubic-bezier(.33,1.3,.45,1.02);
+}
+@keyframes popBounce {
+    0% { transform: scale(0.75);}
+    50% { transform: scale(1.25);}
+    100% { transform: scale(1);}
+}
+
+/* Animación sutil a pie de página y textos del footer */
+@keyframes fadeInUpFooter {
+    0% { opacity: 0; transform: translateY(22px);}
+    100% { opacity: 1; transform: translateY(0);}
+}
+
+/* Popup de eliminación tipo toast */
+.cart-toast {
+    position: fixed;
+    top: 36px;
+    right: 36px;
+    background: linear-gradient(97deg, #fdeec3 0%, #e8dcc4 80%);
+    border: 2px solid var(--gold);
+    border-radius: 16px;
+    color: var(--brown-accent);
+    box-shadow: 0 8px 32px #d4af3738, 0 0 38px #d4af3733;
+    font-weight: 700;
+    font-size: 1.15rem;
+    padding: 16px 38px;
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    animation: popupToastIn 1.2s cubic-bezier(.37,1.12,.91,.91);
+}
+
+@keyframes popupToastIn {
+    0% {opacity: 0; transform: translateY(-40px) scale(0.95);}
+    40% {opacity: 1; transform: translateY(0) scale(1.05);}
+    70% {opacity: 1; transform: scale(1);}
+    100% {opacity: 0;}
+}
+
+/* animación de producto eliminado (fade + scale) */
+.cart-item.removed {
+    animation: cartRemove 0.7s cubic-bezier(.42,1.45,.61,.69);
+    opacity: 0;
+    transform: scale(0.96) translateX(44px);
+    pointer-events: none;
+}
+
+@keyframes cartRemove {
+  0%   { opacity: 1; transform: scale(1) translateX(0);}
+  90%  { opacity: 0.5; transform: scale(1.02) translateX(28px);}
+  100% { opacity: 0; transform: scale(0.96) translateX(44px);}
+}
+
+/* ===== MEJORAS ADICIONALES GLOBALES ===== */
+
+/* Fondo animado suave tipo aurora dorada */
+body::before {
+    content: "";
+    position: fixed;
+    inset: -20%;
+    z-index: -1;
+    background:
+        radial-gradient(circle at 10% 0%, rgba(212,175,55,0.22), transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(139,115,85,0.22), transparent 55%),
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3), transparent 60%);
+    opacity: 0.9;
+    pointer-events: none;
+    animation: bgGlowMove 30s ease-in-out infinite alternate;
+}
+
+@keyframes bgGlowMove {
+    0%   { transform: translate3d(-10px,-8px,0) scale(1); }
+    50%  { transform: translate3d(12px,10px,0)  scale(1.02); }
+    100% { transform: translate3d(-6px,4px,0)   scale(1.01); }
+}
+
+/* Scroll suave */
+html {
+    scroll-behavior: smooth; /* animación integrada de desplazamiento suave [web:42][web:29] */
+}
+
+/* Scrollbar dorado estilo ShinyWeb (Chromium / WebKit) */
+body::-webkit-scrollbar {
+    width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-image: linear-gradient(180deg, #d4af37, #8b7355);
+    border-radius: 999px;
+    box-shadow: 0 0 14px rgba(212,175,55,0.6);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background-image: linear-gradient(180deg, #f5e1a0, #b08b4a);
+}
+
+/* Scrollbar en Firefox */
+body {
+    scrollbar-width: thin;                /* grosor fino [web:39] */
+    scrollbar-color: #d4af37 transparent; /* pulgar / carril [web:39] */
+}
+
+/* Gradientes animados en hover de botones principales */
+.btn-add-cart,
+.btn-login-submit,
+.btn-checkout,
+.btn-buy-now,
+.btn-cart,
+.btn-login,
+.btn-back {
+    background-image: linear-gradient(120deg, #d4af37, #e3c86a, #8b7355);
+    background-size: 220% 220%;
+    background-position: 0% 50%;
+    transition:
+        background-position 0.45s ease,
+        box-shadow 0.35s ease,
+        transform 0.25s ease;
+}
+
+.btn-add-cart:hover,
+.btn-login-submit:hover,
+.btn-checkout:hover,
+.btn-buy-now:hover,
+.btn-cart:hover,
+.btn-login:hover,
+.btn-back:hover {
+    background-position: 100% 50%;
+    box-shadow: 0 10px 26px rgba(212,175,55,0.75);
+}
+
+/* Botones secundarios (btn-view) con gradiente suave beige‑oro */
+.btn-view {
+    background-image: linear-gradient(120deg, #f7efe0, #e8dcc4, #f7efe0);
+    background-size: 200% 200%;
+    background-position: 0% 50%;
+}
+
+.btn-view:hover {
+    background-position: 100% 50%;
+}
+
+/* Efecto neumórfico y ripple */
+button,
+.btn-add-cart,
+.btn-view,
+.btn-checkout,
+.btn-login-submit,
+.cart-item-remove {
+    transition: 
+        background 0.18s cubic-bezier(.68,.01,.91,.87),
+        color 0.17s,
+        transform 0.22s,
+        box-shadow 0.36s cubic-bezier(.38,.94,.48,.99);
+}
+
+button:hover,
+.btn-add-cart:hover,
+.btn-view:hover,
+.btn-checkout:hover,
+.btn-login-submit:hover {
+    background: linear-gradient(97deg, #fdeec3 0%, #e8dcc4 92%);
+    color: var(--brown-accent);
+    transform: scale(1.055) translateY(-2.5px);
+    box-shadow: 0 8px 32px #d4af3738, 0 0 14px #d4af3733;
+}
+
+button:active,
+.btn-add-cart:active,
+.cart-item-remove:active {
+    box-shadow: 0 0 32px 2px #d4af37cc;
+    animation: rippleGold 0.38s;
+}
+
+@keyframes rippleGold {
+    0% { box-shadow: 0 0 0 0 #d4af3760; }
+    60% { box-shadow: 0 0 20px 6px #d4af3766; }
+    100% { box-shadow: 0 0 0 0 #d4af3760; }
+}
+
+/* Focus visible accesible y elegante */
+button:focus-visible,
+.btn-add-cart:focus-visible,
+.btn-view:focus-visible,
+.btn-login-submit:focus-visible,
+.btn-checkout:focus-visible,
+.btn-cart:focus-visible,
+.btn-login:focus-visible,
+.btn-back:focus-visible {
+    outline: none;
+    box-shadow:
+        0 0 0 3px rgba(255,255,255,0.9),
+        0 0 0 6px rgba(212,175,55,0.9);
+    background-image: linear-gradient(135deg, #fff7d0, #d4af37, #8b7355);
+}
+
+/* Inputs con animación de color y sombra */
+input:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow:
+        0 0 8px 2px #d4af375c,
+        0 2px 18px #e8dcc46c;
+    background: linear-gradient(90deg, #fffcea 90%, #fdeec3 100%);
+    transition: border 0.2s, box-shadow 0.33s, background 0.17s;
+}
+
+/* Anillo dorado al hacer clic en CTAs */
+.btn-add-cart,
+.btn-view,
+.btn-login-submit,
+.btn-checkout,
+.btn-buy-now,
+.btn-cart,
+.btn-login,
+.btn-back {
+    position: relative;
+    isolation: isolate;
+}
+
+.btn-add-cart:active::after,
+.btn-view:active::after,
+.btn-login-submit:active::after,
+.btn-checkout:active::after,
+.btn-buy-now:active::after,
+.btn-cart:active::after,
+.btn-login:active::after,
+.btn-back:active::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+    border: 2px solid rgba(212,175,55,0.9);
+    box-shadow: 0 0 20px rgba(212,175,55,0.85);
+    opacity: 0;
+    animation: ringPulse 0.4s ease-out forwards;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes ringPulse {
+    0%   { opacity: 1; transform: scale(0.8); }
+    80%  { opacity: 0.7; transform: scale(1.05); }
+    100% { opacity: 0; transform: scale(1.18); }
+}
+
+/* Efecto glass/vidrio dorado en tarjetas y login */
+.product-card:hover,
+.login-box:hover,
+.cart-items:hover,
+.cart-summary:hover {
+    background: radial-gradient(circle at 0 0, rgba(255,255,255,0.65), rgba(245,240,232,0.96));
+    backdrop-filter: blur(10px);
+    border-color: rgba(212,175,55,0.65);
+}
+
+/* ===== ANIMACIONES LIGADAS AL SCROLL (scroll‑timeline) ===== */
+/* Estas propiedades usan la especificación de animaciones ligadas al scroll [web:44][web:50][web:47] */
+
+/* Definimos una timeline de scroll vertical basada en la página completa */
+@scroll-timeline body-scroll {
+    source: auto;
+    orientation: block;
+}
+
+/* Progreso de un “aura” de fondo según el scroll */
+body::before {
+    animation-name: bgScrollParallax;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: body-scroll;
+}
+
+@keyframes bgScrollParallax {
+    0% {
+        opacity: 0.85;
+        transform: translate3d(-12px,-20px,0) scale(1.02);
+    }
+    50% {
+        opacity: 0.95;
+        transform: translate3d(0,0,0) scale(1.04);
+    }
+    100% {
+        opacity: 0.9;
+        transform: translate3d(10px,16px,0) scale(1.01);
+    }
+}
+
+/* Hero que se desplaza y se difumina ligeramente con el scroll */
+.hero {
+    animation-name: heroScrollFade;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: body-scroll;
+}
+
+@keyframes heroScrollFade {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-40px);
+        opacity: 0.75;
+    }
+}
+
+/* Contenedor de productos que entra desde abajo al hacer scroll */
+.products-container {
+    animation-name: sectionRise;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: both;
+    animation-timeline: body-scroll;
+}
+
+@keyframes sectionRise {
+    0% {
+        transform: translateY(40px);
+        opacity: 0;
+    }
+    30% {
+        transform: translateY(15px);
+        opacity: 0.4;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Cart y login responden al progreso de scroll también */
+.cart-container,
+.login-container {
+    animation-name: sectionScrollGlow;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: body-scroll;
+}
+
+@keyframes sectionScrollGlow {
+    0% {
+        box-shadow: 0 0 0 rgba(212,175,55,0);
+        transform: translateY(24px);
+        opacity: 0.7;
+    }
+    50% {
+        box-shadow: 0 14px 26px rgba(212,175,55,0.25);
+        transform: translateY(6px);
+        opacity: 0.9;
+    }
+    100% {
+        box-shadow: 0 18px 40px rgba(212,175,55,0.38);
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Barra de progreso superior que refleja cuánto se ha hecho scroll */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212,175,55,0.7), transparent);
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    z-index: 50;
+    pointer-events: none;
+}
+
+/* Ligamos su escala al scroll vertical */
+.scroll-progress {
+    animation-name: scrollBarFill;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: body-scroll;
+}
+
+@keyframes scrollBarFill {
+    0%   { transform: scaleX(0); opacity: 0.15; }
+    10%  { opacity: 0.4; }
+    100% { transform: scaleX(1); opacity: 0.9; }
 }
