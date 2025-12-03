@@ -1,155 +1,233 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShinyWeb - Joyería 3D Interactiva</title>
-    <link rel="stylesheet" href="css.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShinyWeb - Joyería 3D Interactiva</title>
+  <link rel="stylesheet" href="css.css">
+
+  <!-- model-viewer -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <h1>✨ ShinyWeb</h1>
-                <p class="tagline">Joyas en 3D</p>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="index.html" class="active">Inicio</a></li>
-                <li><a href="#anillos">Anillos</a></li>
-                <li><a href="#pulseras">Pulseras</a></li>
-                <li><a href="#pendientes">Pendientes</a></li>
-            </ul>
-            <br>
-            <div class="nav-actions">
-                <a href="login.html" class="btn-login">
-                    <span class="icon">👤</span>
-                    Login
-                </a>
-                <a href="carrito.html" class="btn-cart">
-                    <span class="icon">🛒</span>
-                    Carrito
-                    <span class="cart-count" id="cartCount">0</span>
-                </a>
-            </div>
-        </div>
-    </nav>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <h1>ShinyWeb</h1>
+        <p class="tagline">Joyas en 3D</p>
+      </div>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h2>Descubre Nuestras Joyas en 3D</h2>
-            <p>Explora, rota y visualiza cada detalle de nuestras exclusivas piezas</p>
-            <div class="search-container">
-                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar joyas (anillo, pulsera, pendiente)...">
-            </div>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="active">Inicio</a></li>
+        <li><a href="#anillos">Anillos</a></li>
+        <li><a href="#pulseras">Pulseras</a></li>
+        <li><a href="#pendientes">Pendientes</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="login.html" class="btn-login">Login</a>
+        <a href="carrito.html" class="btn-cart">
+          Carrito <span class="cart-count" id="cartCount">0</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h2>Descubre Nuestras Joyas en 3D</h2>
+      <p>Explora, rota y visualiza cada detalle de nuestras exclusivas piezas.</p>
+      <div class="search-container">
+        <input id="searchInput" class="search-input"
+               type="text"
+               placeholder="Buscar joyas (anillo, pulsera, pendiente...)">
+      </div>
+    </div>
+  </section>
+
+  <main class="products-container">
+
+    <!-- ANILLOS -->
+    <section id="anillos" class="category-section">
+      <h2 class="category-title">Anillos</h2>
+      <div class="products-grid">
+
+        <!-- Anillo Elegance (id 1) -->
+        <div class="product-card"
+             data-id="1"
+             data-category="anillos"
+             data-name="anillo elegance">
+          <model-viewer
+            id="viewer-anillo1"
+            src="models/anillo1.glb"
+            alt="Anillo Elegance 3D"
+            auto-rotate
+            camera-controls
+            background-color="#0f0f1e"
+            shadow-intensity="1"
+            loading="eager"
+            style="width: 100%; height: 220px; border-radius: 15px; margin-bottom: 1rem;">
+          </model-viewer>
+
+          <div class="product-info">
+            <h3>Anillo Elegance</h3>
+            <p class="price">349.99 €</p>
+            <button class="btn-view" onclick="viewProduct(1)">Ver Detalles</button>
+            <button class="btn-add-cart" onclick="addToCart(1)">Añadir al Carrito</button>
+          </div>
         </div>
+
+        <!-- Anillo Royal (id 2) -->
+        <div class="product-card"
+             data-id="2"
+             data-category="anillos"
+             data-name="anillo royal">
+          <model-viewer
+            id="viewer-anillo2"
+            src="models/anilloplata2.glb"
+            alt="Anillo Royal 3D"
+            auto-rotate
+            camera-controls
+            background-color="#0f0f1e"
+            shadow-intensity="1"
+            loading="eager"
+            style="width: 100%; height: 220px; border-radius: 15px; margin-bottom: 1rem;">
+          </model-viewer>
+
+          <div class="product-info">
+            <h3>Anillo Royal</h3>
+            <p class="price">429.99 €</p>
+            <button class="btn-view" onclick="viewProduct(2)">Ver Detalles</button>
+            <button class="btn-add-cart" onclick="addToCart(2)">Añadir al Carrito</button>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <main class="products-container">
-        <!-- Bloque resultados vacíos -->
-        <div class="no-results" id="noResults" style="display:none;">
-            <img src="image.jpg" alt="No se encontraron resultados" class="dynamic-image" />
-            <h2><span style="font-size:1.5rem;">😔</span> No se encontraron resultados</h2>
-            <p>Intenta buscar: <b>"anillo"</b>, <b>"pulsera"</b> o <b>"pendiente"</b></p>
+    <!-- PULSERAS -->
+    <section id="pulseras" class="category-section">
+      <h2 class="category-title">Pulseras</h2>
+      <div class="products-grid">
+
+        <!-- Pulsera Sparkle (id 3) -->
+        <div class="product-card"
+             data-id="3"
+             data-category="pulseras"
+             data-name="pulsera sparkle">
+          <model-viewer
+            id="viewer-pulsera1"
+            src="models/pulseraplata1.glb"
+            alt="Pulsera Sparkle 3D"
+            auto-rotate
+            camera-controls
+            background-color="#0f0f1e"
+            shadow-intensity="1"
+            loading="eager"
+            style="width: 100%; height: 220px; border-radius: 15px; margin-bottom: 1rem;">
+          </model-viewer>
+
+          <div class="product-info">
+            <h3>Pulsera Sparkle</h3>
+            <p class="price">289.99 €</p>
+            <button class="btn-view" onclick="viewProduct(3)">Ver Detalles</button>
+            <button class="btn-add-cart" onclick="addToCart(3)">Añadir al Carrito</button>
+          </div>
         </div>
 
-        <section id="anillos" class="category-section">
-            <h2 class="category-title">Anillos</h2>
-            <div class="products-grid">
-                <div class="product-card" data-id="1" data-category="anillos" data-name="anillo elegance">
-                    <div class="product-viewer" id="viewer-anillo1"></div>
-                    <div class="product-info">
-                        <h3>Anillo Elegance</h3>
-                        <p class="price">349.99 €</p>
-                        <button class="btn-view" onclick="viewProduct(1)">Ver Detalles</button>
-                        <button class="btn-add-cart" onclick="addToCart(1, 'Anillo Elegance', 349.99, 'image.jpg')">
-                            Añadir al Carrito
-                        </button>
-                    </div>
-                </div>
+        <!-- Pulsera Diamond (id 4) -->
+        <div class="product-card"
+             data-id="4"
+             data-category="pulseras"
+             data-name="pulsera diamond">
+          <model-viewer
+            id="viewer-pulsera2"
+            src="models/pulseraplata2.glb"
+            alt="Pulsera Diamond 3D"
+            auto-rotate
+            camera-controls
+            background-color="#0f0f1e"
+            shadow-intensity="1"
+            loading="eager"
+            style="width: 100%; height: 220px; border-radius: 15px; margin-bottom: 1rem;">
+          </model-viewer>
 
-                <div class="product-card" data-id="2" data-category="anillos" data-name="anillo royal">
-                    <div class="product-viewer" id="viewer-anillo2"></div>
-                    <div class="product-info">
-                        <h3>Anillo Royal</h3>
-                        <p class="price">429.99 €</p>
-                        <button class="btn-view" onclick="viewProduct(2)">Ver Detalles</button>
-                        <button class="btn-add-cart" onclick="addToCart(2, 'Anillo Royal', 429.99, 'image.jpg')">
-                            Añadir al Carrito
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
+          <div class="product-info">
+            <h3>Pulsera Diamond</h3>
+            <p class="price">389.99 €</p>
+            <button class="btn-view" onclick="viewProduct(4)">Ver Detalles</button>
+            <button class="btn-add-cart" onclick="addToCart(4)">Añadir al Carrito</button>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <section id="pulseras" class="category-section">
-            <h2 class="category-title">Pulseras</h2>
-            <div class="products-grid">
-                <div class="product-card" data-id="3" data-category="pulseras" data-name="pulsera sparkle">
-                    <div class="product-viewer" id="viewer-pulsera1"></div>
-                    <div class="product-info">
-                        <h3>Pulsera Sparkle</h3>
-                        <p class="price">289.99 €</p>
-                        <button class="btn-view" onclick="viewProduct(3)">Ver Detalles</button>
-                        <button class="btn-add-cart" onclick="addToCart(3, 'Pulsera Sparkle', 289.99, 'image.jpg')">
-                            Añadir al Carrito
-                        </button>
-                    </div>
-                </div>
+    <!-- PENDIENTES -->
+    <section id="pendientes" class="category-section">
+      <h2 class="category-title">Pendientes</h2>
+      <div class="products-grid">
 
-                <div class="product-card" data-id="4" data-category="pulseras" data-name="pulsera diamond">
-                    <div class="product-viewer" id="viewer-pulsera2"></div>
-                    <div class="product-info">
-                        <h3>Pulsera Diamond</h3>
-                        <p class="price">389.99 €</p>
-                        <button class="btn-view" onclick="viewProduct(4)">Ver Detalles</button>
-                        <button class="btn-add-cart" onclick="addToCart(4, 'Pulsera Diamond', 389.99, 'image.jpg')">
-                            Añadir al Carrito
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- Pendientes Shine (id 5) -->
+        <div class="product-card"
+             data-id="5"
+             data-category="pendientes"
+             data-name="pendientes shine">
+          <model-viewer
+            id="viewer-pendiente1"
+            src="models/pendienteplata1.glb"
+            alt="Pendientes Shine 3D"
+            auto-rotate
+            camera-controls
+            background-color="#0f0f1e"
+            shadow-intensity="1"
+            loading="eager"
+            style="width: 100%; height: 220px; border-radius: 15px; margin-bottom: 1rem;">
+          </model-viewer>
 
-        <section id="pendientes" class="category-section">
-            <h2 class="category-title">Pendientes</h2>
-            <div class="products-grid">
-                <div class="product-card" data-id="5" data-category="pendientes" data-name="pendientes shine">
-                    <div class="product-viewer" id="viewer-pendiente1"></div>
-                    <div class="product-info">
-                        <h3>Pendientes Shine</h3>
-                        <p class="price">259.99 €</p>
-                        <button class="btn-view" onclick="viewProduct(5)">Ver Detalles</button>
-                        <button class="btn-add-cart" onclick="addToCart(5, 'Pendientes Shine', 259.99, 'image.jpg')">
-                            Añadir al Carrito
-                        </button>
-                    </div>
-                </div>
+          <div class="product-info">
+            <h3>Pendientes Shine</h3>
+            <p class="price">259.99 €</p>
+            <button class="btn-view" onclick="viewProduct(5)">Ver Detalles</button>
+            <button class="btn-add-cart" onclick="addToCart(5)">Añadir al Carrito</button>
+          </div>
+        </div>
 
-                <div class="product-card" data-id="6" data-category="pendientes" data-name="pendientes luxury">
-                    <div class="product-viewer" id="viewer-pendiente2"></div>
-                    <div class="product-info">
-                        <h3>Pendientes Luxury</h3>
-                        <p class="price">329.99 €</p>
-                        <button class="btn-view" onclick="viewProduct(6)">Ver Detalles</button>
-                        <button class="btn-add-cart" onclick="addToCart(6, 'Pendientes Luxury', 329.99, 'image.jpg')">
-                            Añadir al Carrito
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+        <!-- Pendientes Luxury (id 6) -->
+        <div class="product-card"
+             data-id="6"
+             data-category="pendientes"
+             data-name="pendientes luxury">
+          <model-viewer
+            id="viewer-pendiente2"
+            src="models/pendienteplata2.glb"
+            alt="Pendientes Luxury 3D"
+            auto-rotate
+            camera-controls
+            background-color="#0f0f1e"
+            shadow-intensity="1"
+            loading="eager"
+            style="width: 100%; height: 220px; border-radius: 15px; margin-bottom: 1rem;">
+          </model-viewer>
 
-    <footer class="footer">
-        <p>&copy; 2025 ShinyWeb - David Vargas, Alex Garcia, Pau Ferrer</p>
-        <p>Proyecto Intermodular 2º DAW</p>
-    </footer>
+          <div class="product-info">
+            <h3>Pendientes Luxury</h3>
+            <p class="price">329.99 €</p>
+            <button class="btn-view" onclick="viewProduct(6)">Ver Detalles</button>
+            <button class="btn-add-cart" onclick="addToCart(6)">Añadir al Carrito</button>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="cart.js"></script>
-    <script src="viewer3D.js"></script>
-    <script src="main.js"></script>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 ShinyWeb - David Vargas, Alex Garcia, Pau Ferrer</p>
+    <p>Proyecto Intermodular 2 DAW</p>
+  </footer>
+
+  <script src="cart.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
