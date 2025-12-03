@@ -1630,3 +1630,174 @@ body::before {
     10%  { opacity: 0.4; }
     100% { transform: scaleX(1); opacity: 0.9; }
 }
+
+/*NUEVAS MEJORAS DEL PROYECTO: */
+
+/* ===========================
+   CAPA EXTRA DE EFECTOS “WOW”
+   =========================== */
+
+/* 1) Halo neón suave en títulos importantes */
+.hero-content h2,
+.category-title,
+.cart-container h1,
+.product-detail-info h1 {
+    text-shadow:
+        0 0 8px rgba(212,175,55,0.9),
+        0 0 16px rgba(212,175,55,0.7),
+        0 0 30px rgba(212,175,55,0.5);
+}
+
+/* 2) Borde neón en hover de tarjetas */
+.product-card:hover {
+    box-shadow:
+        0 0 18px rgba(212,175,55,0.8),
+        0 0 40px rgba(212,175,55,0.6),
+        0 18px 34px rgba(0,0,0,0.25);
+    border-color: rgba(212,175,55,0.9);
+}
+
+/* 3) Línea inferior neón en la navbar al hacer scroll (simulada con hover sobre body) */
+body:hover .navbar::after {
+    content: "";
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    bottom: 0;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, #d4af37, #e3c86a, transparent);
+    box-shadow: 0 0 20px rgba(212,175,55,0.9);
+}
+
+/* 4) Tarjetas con glassmorphism más marcado */
+.product-card,
+.cart-summary,
+.cart-items,
+.login-box,
+.no-results {
+    background: radial-gradient(circle at 0 0, rgba(255,255,255,0.9), rgba(245,240,232,0.88));
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+/* 5) Botones “neón” más agresivos en hover */
+.btn-add-cart,
+.btn-login-submit,
+.btn-checkout,
+.btn-buy-now,
+.btn-cart,
+.btn-login,
+.btn-back {
+    box-shadow: 0 0 10px rgba(212,175,55,0.7);
+}
+
+.btn-add-cart:hover,
+.btn-login-submit:hover,
+.btn-checkout:hover,
+.btn-buy-now:hover,
+.btn-cart:hover,
+.btn-login:hover,
+.btn-back:hover {
+    box-shadow:
+        0 0 20px rgba(212,175,55,1),
+        0 0 45px rgba(212,175,55,0.8);
+    filter: saturate(1.2);
+}
+
+/* 6) Borde neón animado alrededor de botones principales */
+.btn-add-cart::before,
+.btn-login-submit::before,
+.btn-checkout::before,
+.btn-buy-now::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    border: 1px solid rgba(212,175,55,0.0);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    animation: neonBorder 4s linear infinite;
+}
+
+@keyframes neonBorder {
+    0%   { border-color: rgba(212,175,55,0.0); box-shadow: 0 0 0 rgba(212,175,55,0); }
+    40%  { border-color: rgba(212,175,55,0.6); box-shadow: 0 0 24px rgba(212,175,55,0.8); }
+    60%  { border-color: rgba(212,175,55,0.9); box-shadow: 0 0 32px rgba(212,175,55,1); }
+    100% { border-color: rgba(212,175,55,0.0); box-shadow: 0 0 0 rgba(212,175,55,0); }
+}
+
+/* 7) Ligerísimo parallax extra en fondo al hacer scroll (complementa lo que ya tienes) */
+body::before {
+    animation-duration: 40s;
+}
+
+/* 8) Tarjetas de producto “respiran” cuando entras en la página */
+.products-grid .product-card {
+    animation: productIntro 0.7s cubic-bezier(.37,1.12,.91,.91);
+}
+
+@keyframes productIntro {
+    0%   { opacity: 0; transform: translateY(25px) scale(0.96); }
+    70%  { opacity: 1; transform: translateY(-4px) scale(1.02); }
+    100% { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* 9) Efecto “scanline” muy suave en hero al desplazarse */
+.hero::after {
+    background:
+        linear-gradient(
+            rgba(0,0,0,0.01) 50%,
+            rgba(255,255,255,0.06) 51%,
+            rgba(0,0,0,0.01) 52%
+        );
+    background-size: 100% 4px;
+    mix-blend-mode: soft-light;
+    opacity: 0.3;
+}
+
+/* 10) Glow extra en la barra de progreso de scroll */
+.scroll-progress {
+    box-shadow: 0 0 12px rgba(212,175,55,0.85);
+}
+
+/* 11) Micro-movimiento de secciones cuando cambias de zona (sin JS) */
+section,
+main {
+    scroll-margin-top: 80px;
+    transition: transform 0.35s ease-out, box-shadow 0.35s ease-out;
+}
+
+section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 35px rgba(0,0,0,0.15);
+}
+
+/* 12) Sutil parallax en el fondo de las tarjetas del carrito */
+.cart-item-image {
+    background-position: center;
+    background-size: 120% 120%;
+    transition: transform 0.3s ease, background-position 0.4s ease;
+}
+
+.cart-item-image:hover {
+    background-position: 45% 35%;
+}
+
+/* 13) Efecto “focus ring” neón para inputs cuando se navega con teclado */
+input:focus-visible {
+    outline: 2px solid rgba(212,175,55,0.9);
+    outline-offset: 2px;
+}
+
+/* 14) Pestañas del menú con aura al pasar el ratón */
+.nav-menu a:hover {
+    box-shadow: 0 0 12px rgba(212,175,55,0.6);
+}
+
+/* 15) Footer con resplandor al llegar al final de la página */
+.footer {
+    box-shadow: 0 -6px 24px rgba(212,175,55,0.35);
+}
+
+
