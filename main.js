@@ -1,3 +1,7 @@
+/* ============================================================
+   SHINYWEB - main.js (versión simplificada con model-viewer)
+   ============================================================ */
+
 const products = {
     1: {
         name: 'Anillo Elegance',
@@ -49,127 +53,53 @@ const products = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
+// ============================================================
+// INICIALIZACIÓN PRINCIPAL
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function () {
     console.log('Inicializando ShinyWeb...');
     updateCartCount();
-    
-    Object.keys(products).forEach(id => {
-        const product = products[id];
-        const viewerId = 'viewer-' + product.category + (id <= 2 ? id : id - 2 * Math.floor((id-1)/2));
-        const container = document.getElementById(viewerId);
-        
-        if (container) {
-            console.log('Cargando modelo: ' + product.model + ' en ' + viewerId);
-            initViewer(container, product.model);
-        }
-    });
-    
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-    
     initSearch();
 });
 
+// ============================================================
+// BUSCADOR
+// ============================================================
+
 function initSearch() {
     const searchInput = document.getElementById('searchInput');
-    
-    if (!searchInput) {
-        console.error('No se encontró el input de búsqueda');
-        return;
-    }
-    
-    console.log('Buscador inicializado');
-    
-    searchInput.addEventListener('input', function() {
+    if (!searchInput) return;
+
+    searchInput.addEventListener('input', function () {
         const searchTerm = this.value.toLowerCase().trim();
-        console.log('Buscando: ' + searchTerm);
-        
-        const allCards = document.querySelectorAll('.product-card');
-        const allSections = document.querySelectorAll('.category-section');
-        
-        const existingNoResults = document.querySelector('.no-results');
-        if (existingNoResults) {
-            existingNoResults.remove();
-        }
-        
-        if (searchTerm === '') {
-            allCards.forEach(card => card.classList.remove('hidden'));
-            allSections.forEach(section => section.classList.remove('hidden'));
-            return;
-        }
-        
-        let hasResults = false;
-        
-        allCards.forEach(card => {
-            const productName = card.getAttribute('data-name');
-            const category = card.getAttribute('data-category');
-            
-            if (productName.includes(searchTerm) || category.includes(searchTerm)) {
-                card.classList.remove('hidden');
-                hasResults = true;
-            } else {
-                card.classList.add('hidden');
-            }
+        const cards = document.querySelectorAll('.product-card');
+        const sections = document.querySelectorAll('.category-section');
+
+        cards.forEach(card => {
+            const name = card.dataset.name;
+            const category = card.dataset.category;
+            card.classList.toggle('hidden', !(name.includes(searchTerm) || category.includes(searchTerm)));
         });
-        
-        allSections.forEach(section => {
-            const visibleCards = section.querySelectorAll('.product-card:not(.hidden)');
-            if (visibleCards.length === 0) {
-                section.classList.add('hidden');
-            } else {
-                section.classList.remove('hidden');
-            }
+
+        sections.forEach(section => {
+            const visible = section.querySelectorAll('.product-card:not(.hidden)').length > 0;
+            section.style.display = visible ? 'block' : 'none';
         });
-        
-        if (!hasResults) {
-            const noResultsDiv = document.createElement('div');
-            noResultsDiv.className = 'no-results';
-            noResultsDiv.innerHTML = '<h3>😔 No se encontraron resultados</h3><p>Intenta buscar: "anillo", "pulsera" o "pendiente"</p>';
-            
-            const container = document.querySelector('.products-container');
-            const firstSection = container.querySelector('.category-section');
-            container.insertBefore(noResultsDiv, firstSection);
-        }
     });
 }
+
+// ============================================================
+// NAVEGACIÓN A LA PÁGINA DE DETALLE
+// ============================================================
 
 function viewProduct(id) {
     window.location.href = 'producto.html?id=' + id;
 }
 
-function addToCart(id) {
-    const product = products[id];
-    if (!product) return;
-    
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const existingItem = cart.find(item => item.id === id);
-    
-    if (existingItem) {
-        existingItem.quantity += 1;
-    } else {
-        cart.push({
-            id: id,
-            name: product.name,
-            price: product.price,
-            model: product.model,
-            quantity: 1
-        });
-    }
-    
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCount();
-    showNotification(product.name + ' añadido al carrito');
-}
+// ============================================================
+// CARGAR PRODUCTO EN LA PÁGINA DE DETALLE
+// ============================================================
 
 function loadProductDetail(id) {
     const product = products[id];
@@ -177,49 +107,63 @@ function loadProductDetail(id) {
         window.location.href = 'index.html';
         return;
     }
-    
+
     document.getElementById('productName').textContent = product.name;
     document.getElementById('productPrice').textContent = product.price + ' €';
     document.getElementById('productDescription').textContent = product.description;
-    
+
     const featuresList = document.getElementById('productFeatures');
-    featuresList.innerHTML = product.features.map(f => '<li>' + f + '</li>').join('');
-    
+    featuresList.innerHTML = product.features.map(f => `<li>${f}</li>`).join('');
+
     const viewer = document.getElementById('detailViewer');
     if (viewer) {
-        initViewer(viewer, product.model, true);
+        viewer.setAttribute("src", "models/" + product.model);
     }
-    
+
     window.currentProductId = id;
 }
 
-function addToCartFromDetail() {
-    if (window.currentProductId) {
-        addToCart(window.currentProductId);
+// ============================================================
+// CARRITO
+// ============================================================
+
+function addToCart(id) {
+    const product = products[id];
+    if (!product) return;
+
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existing = cart.find(item => item.id === id);
+
+    if (existing) {
+        existing.quantity++;
+    } else {
+        cart.push({ id, name: product.name, price: product.price, model: product.model, quantity: 1 });
     }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    showNotification(product.name + ' añadido al carrito');
+}
+
+function addToCartFromDetail() {
+    if (window.currentProductId) addToCart(window.currentProductId);
 }
 
 function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    const countElements = document.querySelectorAll('.cart-count');
-    countElements.forEach(el => {
-        el.textContent = totalItems;
+    const total = cart.reduce((s, item) => s + item.quantity, 0);
+
+    document.querySelectorAll('.cart-count').forEach(el => {
+        el.textContent = total;
     });
 }
 
 function showNotification(message) {
-    const notification = document.createElement('div');
-    notification.style.cssText = 'position: fixed; top: 100px; right: 20px; background: var(--gold); color: var(--text-dark); padding: 1rem 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 10000; font-weight: bold; animation: slideIn 0.3s ease;';
-    notification.textContent = message;
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => notification.remove(), 300);
-    }, 2000);
+    const div = document.createElement('div');
+    div.className = 'notification';
+    div.style.cssText =
+        'position:fixed;top:100px;right:20px;background:var(--gold);color:var(--text-dark);padding:1rem 2rem;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,0.3);z-index:10000;font-weight:bold;';
+    div.textContent = message;
+    document.body.appendChild(div);
+    setTimeout(() => div.remove(), 2000);
 }
-
-const style = document.createElement('style');
-style.textContent = '@keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } } @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(400px); opacity: 0; } }';
-document.head.appendChild(style);

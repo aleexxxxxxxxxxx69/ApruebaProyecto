@@ -11,7 +11,9 @@
     src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
   </script>
 </head>
+
 <body>
+  <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-container">
       <div class="logo">
@@ -26,10 +28,11 @@
     </div>
   </nav>
 
+  <!-- CONTENIDO DEL PRODUCTO -->
   <main class="product-detail-container">
     <div class="product-detail-grid">
 
-      <!-- Visor 3D -->
+      <!-- VISOR 3D -->
       <div class="product-detail-viewer">
         <model-viewer
           id="detailViewer"
@@ -44,7 +47,7 @@
         </model-viewer>
       </div>
 
-      <!-- Info -->
+      <!-- INFORMACIÓN DEL PRODUCTO -->
       <div class="product-detail-info">
         <h1 id="productName">Cargando...</h1>
         <p class="product-price" id="productPrice">0.00 €</p>
@@ -66,12 +69,15 @@
           <button class="btn-buy-now">Comprar Ahora</button>
         </div>
       </div>
+
     </div>
   </main>
 
+  <!-- SCRIPTS -->
   <script src="cart.js"></script>
   <script src="main.js"></script>
 
+  <!-- CARGA DEL PRODUCTO -->
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const productId = parseInt(urlParams.get("id"));
@@ -79,5 +85,6 @@
       loadProductDetail(productId);
     }
   </script>
+
 </body>
 </html>
