@@ -34,7 +34,7 @@ const products = {
     5: {
         name: 'Pendientes Shine',
         price: 259.99,
-        model: 'pendienteplata1.glb',
+        model: 'pendientesplata1.glb',
         category: 'pendientes',
         description: 'Pendientes de plata elegantes. Elegancia clásica que nunca pasa de moda.',
         features: ['Plata 925', 'Diseño clásico', 'Cierre de seguridad', 'Hipoalergénicos']
@@ -42,7 +42,7 @@ const products = {
     6: {
         name: 'Pendientes Luxury',
         price: 329.99,
-        model: 'pendienteplata2.glb',
+        model: 'pendientesplata2.glb',
         category: 'pendientes',
         description: 'Pendientes largos de plata. Lujo y distinción en cada detalle.',
         features: ['Plata 925', 'Diseño largo', 'Acabado brillante', 'Edición limitada']
