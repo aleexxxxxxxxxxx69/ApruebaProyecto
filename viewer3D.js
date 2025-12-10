@@ -4,8 +4,8 @@ const modeloPorViewer = {
     "viewer-anillo2": "anillo2plata.glb",
     "viewer-pulsera1": "pulsera1.glb",
     "viewer-pulsera2": "pulsera2.glb",
-    "viewer-pendiente1": "pendiente1.glb",
-    "viewer-pendiente2": "pendiente2.glb"
+    "viewer-pendiente1": "pendientesplata1.glb",
+    "viewer-pendiente2": "pendientesplata2.glb"
 };
 
 // Inicializa todos los viewers de la página automáticamente

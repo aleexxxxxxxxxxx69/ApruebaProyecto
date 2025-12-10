@@ -271,10 +271,10 @@ body:hover .hero {
 }
 
 .search-input::placeholder {
-    color: #b9a886;
+    color: #020202;
     font-weight: 500;
     opacity: 0.85;
-    text-shadow: 0 0 4px #d4af37;
+    text-shadow: 0 0 2px #5c4600;
     transition: opacity 0.3s ease;
 }
 
@@ -385,16 +385,18 @@ body:hover .hero {
 
 /* destello discreto en esquina */
 .product-card::before {
-    content: "";
-    position: absolute;
-    top: -40px;
-    right: -40px;
-    width: 80px;
-    height: 80px;
-    background: radial-gradient(circle, rgba(212,175,55,0.5), transparent 60%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  content: "";
+  position: absolute;
+  inset: 0; /* top/right/bottom/left = 0 */
+  background: radial-gradient(circle at 30% 0, rgba(212,175,55,0.35), transparent 70%);
+  opacity: 0.85;          /* visible siempre, ajusta a tu gusto */
+  pointer-events: none;   /* no bloquea clics */
 }
+.product-card:hover::before {
+  opacity: 0.9;
+}
+
+
 
 .product-card:hover::before {
     opacity: 0.9;
@@ -439,6 +441,14 @@ body:hover .hero {
     margin-bottom: 0.3rem;
     animation: fadeInSlideUp 0.6s ease forwards;
 }
+.product-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
 
 .price {
     font-size: 1.4rem;
@@ -455,7 +465,7 @@ body:hover .hero {
     border: none;
     font-size: 0.9rem;
     cursor: pointer;
-    margin: 0.2rem;
+    margin: 0 rem;
     position: relative;
     overflow: hidden;
     will-change: transform;
@@ -1575,113 +1585,68 @@ body::before {
 }
 
 /* Cart y login responden al progreso de scroll también */
-.cart-container,
-.login-container {
-    animation-name: sectionScrollGlow;
-    animation-duration: 1s;
-    animation-timing-function: linear;
-    animation-fill-mode: both;
-    animation-timeline: body-scroll;
+
+/* ===== Fondo mosaic suave (mantiene tu paleta) ===== */
+body {
+  color: #201a10;
+  background-image:
+    radial-gradient(circle at 0 0, #fdf7ed 0%, #f5f0e8 40%, #efe2cc 100%),
+    linear-gradient(45deg,
+      rgba(212,175,55,0.06) 25%, transparent 25%,
+      transparent 50%, rgba(212,175,55,0.06) 50%,
+      rgba(212,175,55,0.06) 75%, transparent 75%, transparent);
+  background-size: auto, 26px 26px;
+  background-attachment: fixed;
 }
 
-@keyframes sectionScrollGlow {
-    0% {
-        box-shadow: 0 0 0 rgba(212,175,55,0);
-        transform: translateY(24px);
-        opacity: 0.7;
-    }
-    50% {
-        box-shadow: 0 14px 26px rgba(212,175,55,0.25);
-        transform: translateY(6px);
-        opacity: 0.9;
-    }
-    100% {
-        box-shadow: 0 18px 40px rgba(212,175,55,0.38);
-        transform: translateY(0);
-        opacity: 1;
-    }
+/* Fondo aurora algo más suave y lento */
+body::before {
+  animation: bgGlowMove 40s ease-in-out infinite alternate;
 }
 
-/* Barra de progreso superior que refleja cuánto se ha hecho scroll */
-.scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 3px;
-    width: 100%;
-    background: linear-gradient(90deg, transparent, rgba(212,175,55,0.7), transparent);
-    transform-origin: 0 50%;
-    transform: scaleX(0);
-    z-index: 50;
-    pointer-events: none;
+/* ===== Navbar: botones menú mejorados ===== */
+.nav-menu a {
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  border: 1px solid transparent;
+  background: radial-gradient(circle at 0 0, rgba(255,255,255,0.7), rgba(245,240,232,0.8));
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+.nav-menu a::after {
+  left: 1.1rem;
+  bottom: 0.2rem;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+}
+.nav-menu a:hover::after,
+.nav-menu a.active::after {
+  width: calc(100% - 2.2rem);
+}
+.nav-menu a:hover,
+.nav-menu a.active {
+  border-color: rgba(212,175,55,0.9);
+  box-shadow: 0 6px 18px rgba(212,175,55,0.35);
 }
 
-/* Ligamos su escala al scroll vertical */
-.scroll-progress {
-    animation-name: scrollBarFill;
-    animation-duration: 1s;
-    animation-timing-function: linear;
-    animation-fill-mode: both;
-    animation-timeline: body-scroll;
+/* ===== Botones derecha navbar mejorados ===== */
+.nav-actions .btn-login,
+.nav-actions .btn-cart {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding-inline: 1.4rem;
+  border: 1px solid rgba(255,255,255,0.7);
+  box-shadow:
+    0 0 12px rgba(212,175,55,0.65),
+    0 8px 18px rgba(0,0,0,0.25);
 }
 
-@keyframes scrollBarFill {
-    0%   { transform: scaleX(0); opacity: 0.15; }
-    10%  { opacity: 0.4; }
-    100% { transform: scaleX(1); opacity: 0.9; }
-}
-
-/*NUEVAS MEJORAS DEL PROYECTO: */
-
-/* ===========================
-   CAPA EXTRA DE EFECTOS “WOW”
-   =========================== */
-
-/* 1) Halo neón suave en títulos importantes */
-.hero-content h2,
-.category-title,
-.cart-container h1,
-.product-detail-info h1 {
-    text-shadow:
-        0 0 8px rgba(212,175,55,0.9),
-        0 0 16px rgba(212,175,55,0.7),
-        0 0 30px rgba(212,175,55,0.5);
-}
-
-/* 2) Borde neón en hover de tarjetas */
-.product-card:hover {
-    box-shadow:
-        0 0 18px rgba(212,175,55,0.8),
-        0 0 40px rgba(212,175,55,0.6),
-        0 18px 34px rgba(0,0,0,0.25);
-    border-color: rgba(212,175,55,0.9);
-}
-
-/* 3) Línea inferior neón en la navbar al hacer scroll (simulada con hover sobre body) */
-body:hover .navbar::after {
-    content: "";
-    position: absolute;
-    left: 5%;
-    right: 5%;
-    bottom: 0;
-    height: 2px;
-    border-radius: 999px;
-    background: linear-gradient(90deg, transparent, #d4af37, #e3c86a, transparent);
-    box-shadow: 0 0 20px rgba(212,175,55,0.9);
-}
-
-/* 4) Tarjetas con glassmorphism más marcado */
-.product-card,
-.cart-summary,
-.cart-items,
-.login-box,
-.no-results {
-    background: radial-gradient(circle at 0 0, rgba(255,255,255,0.9), rgba(245,240,232,0.88));
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-}
-
-/* 5) Botones “neón” más agresivos en hover */
+/* Gradiente animado dorado en todos los botones principales */
 .btn-add-cart,
 .btn-login-submit,
 .btn-checkout,
@@ -1689,9 +1654,14 @@ body:hover .navbar::after {
 .btn-cart,
 .btn-login,
 .btn-back {
-    box-shadow: 0 0 10px rgba(212,175,55,0.7);
+  background-image: linear-gradient(120deg, #d4af37, #e3c86a, #8b7355);
+  background-size: 220% 220%;
+  background-position: 0% 50%;
+  transition:
+    background-position 0.45s ease,
+    box-shadow 0.35s ease,
+    transform 0.25s ease;
 }
-
 .btn-add-cart:hover,
 .btn-login-submit:hover,
 .btn-checkout:hover,
@@ -1699,295 +1669,106 @@ body:hover .navbar::after {
 .btn-cart:hover,
 .btn-login:hover,
 .btn-back:hover {
-    box-shadow:
-        0 0 20px rgba(212,175,55,1),
-        0 0 45px rgba(212,175,55,0.8);
-    filter: saturate(1.2);
+  background-position: 100% 50%;
+  box-shadow: 0 10px 26px rgba(212,175,55,0.75);
 }
 
-/* 6) Borde neón animado alrededor de botones principales */
-.btn-add-cart::before,
-.btn-login-submit::before,
-.btn-checkout::before,
-.btn-buy-now::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: inherit;
-    border: 1px solid rgba(212,175,55,0.0);
-    pointer-events: none;
-    mix-blend-mode: screen;
-    animation: neonBorder 4s linear infinite;
+/* ===== Mejora de contraste en textos clave ===== */
+.hero-content h2 {
+  color: #2a2317;
 }
-
-@keyframes neonBorder {
-    0%   { border-color: rgba(212,175,55,0.0); box-shadow: 0 0 0 rgba(212,175,55,0); }
-    40%  { border-color: rgba(212,175,55,0.6); box-shadow: 0 0 24px rgba(212,175,55,0.8); }
-    60%  { border-color: rgba(212,175,55,0.9); box-shadow: 0 0 32px rgba(212,175,55,1); }
-    100% { border-color: rgba(212,175,55,0.0); box-shadow: 0 0 0 rgba(212,175,55,0); }
-}
-
-/* 7) Ligerísimo parallax extra en fondo al hacer scroll (complementa lo que ya tienes) */
-body::before {
-    animation-duration: 40s;
-}
-
-/* 8) Tarjetas de producto “respiran” cuando entras en la página */
-.products-grid .product-card {
-    animation: productIntro 0.7s cubic-bezier(.37,1.12,.91,.91);
-}
-
-@keyframes productIntro {
-    0%   { opacity: 0; transform: translateY(25px) scale(0.96); }
-    70%  { opacity: 1; transform: translateY(-4px) scale(1.02); }
-    100% { opacity: 1; transform: translateY(0)    scale(1); }
-}
-
-/* 9) Efecto “scanline” muy suave en hero al desplazarse */
-.hero::after {
-    background:
-        linear-gradient(
-            rgba(0,0,0,0.01) 50%,
-            rgba(255,255,255,0.06) 51%,
-            rgba(0,0,0,0.01) 52%
-        );
-    background-size: 100% 4px;
-    mix-blend-mode: soft-light;
-    opacity: 0.3;
-}
-
-/* 10) Glow extra en la barra de progreso de scroll */
-.scroll-progress {
-    box-shadow: 0 0 12px rgba(212,175,55,0.85);
-}
-
-/* 11) Micro-movimiento de secciones cuando cambias de zona (sin JS) */
-section,
-main {
-    scroll-margin-top: 80px;
-    transition: transform 0.35s ease-out, box-shadow 0.35s ease-out;
-}
-
-section:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 35px rgba(0,0,0,0.15);
-}
-
-/* 12) Sutil parallax en el fondo de las tarjetas del carrito */
-.cart-item-image {
-    background-position: center;
-    background-size: 120% 120%;
-    transition: transform 0.3s ease, background-position 0.4s ease;
-}
-
-.cart-item-image:hover {
-    background-position: 45% 35%;
-}
-
-/* 13) Efecto “focus ring” neón para inputs cuando se navega con teclado */
-input:focus-visible {
-    outline: 2px solid rgba(212,175,55,0.9);
-    outline-offset: 2px;
-}
-
-/* 14) Pestañas del menú con aura al pasar el ratón */
-.nav-menu a:hover {
-    box-shadow: 0 0 12px rgba(212,175,55,0.6);
-}
-
-/* 15) Footer con resplandor al llegar al final de la página */
-.footer {
-    box-shadow: 0 -6px 24px rgba(212,175,55,0.35);
-}
-/* =========================
-   MEJORAS UI ESPECÍFICAS
-   ========================= */
-
-/* 1) Botones barra navegación mejorados (no genéricos) */
-.nav-menu a {
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-weight: 600;
-    padding: 0.45rem 1.1rem;
-    border-radius: 999px;
-    border: 1px solid transparent;
-    background: radial-gradient(circle at 0 0, rgba(255,255,255,0.7), rgba(245,240,232,0.8));
-    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
-}
-
-.nav-menu a:hover,
-.nav-menu a.active {
-    border-color: rgba(212,175,55,0.9);
-    box-shadow: 0 6px 18px rgba(212,175,55,0.35);
-}
-
-/* 2) Botones derecha navbar más claros y “premium” */
-.nav-actions .btn-login,
-.nav-actions .btn-cart {
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    padding-inline: 1.4rem;
-    border: 1px solid rgba(255,255,255,0.7);
-    box-shadow:
-        0 0 12px rgba(212,175,55,0.65),
-        0 8px 18px rgba(0,0,0,0.25);
-}
-
-.nav-actions .btn-login:hover,
-.nav-actions .btn-cart:hover {
-    border-color: rgba(212,175,55,0.95);
-}
-
-/* 3) Colores de texto con más contraste (sin cambiar paleta base) */
-body {
-    color: #201a10;
-}
-
 .hero-content p,
 .product-description p,
 .product-features li,
 .cart-item-details h3,
 .footer p {
-    color: #3a3224;
+  color: #3a3224;
 }
-
 .price,
 .product-price,
 .cart-item-price {
-    color: #d9b23c;
+  color: #d9b23c;
 }
 
-/* 4) Card ítems: separar claramente zona 3D y zona info */
-.product-viewer {
-    border-radius: 10px 10px 6px 6px;
-    border-bottom: 2px solid rgba(0,0,0,0.04);
-}
-
-.product-info {
-    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(245,238,220,0.98));
-    border-radius: 10px;
-    margin-top: 0.4rem;
-    padding: 0.7rem 0.5rem 0.9rem;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-}
-
-/* 5) Desactivar cualquier panel raro al hacer hover en cards */
-.product-card::before {
-    /* se mantiene el brillo, pero bajamos fuerza para que parezca solo halo */
-    opacity: 0.4;
-}
-
-/* 6) Línea subrayado categorías hasta todo el texto */
-.category-title {
-    display: inline-block;
-    padding: 0.2rem 1.2rem;
-}
-
-.category-title::after {
-    width: 100%;
-    height: 2px;
-    margin-top: 0.35rem;
-}
-
-/* 7) Color de la línea animada de fondo (títulos) un poco más suave */
-.category-title::before {
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(227,200,106,0.85),
-        rgba(212,175,55,0.9),
-        transparent
-    );
-}
-
-/* 8) Reborde en textos clave (nombres y precios) */
+/* Reborde suave en nombres y precios */
 .product-info h3,
 .product-detail-info h1,
 .cart-item-details h3 {
-    text-shadow:
-        0 0 1px rgba(255,255,255,0.95),
-        0 0 6px rgba(0,0,0,0.35);
+  text-shadow:
+    0 0 1px rgba(255,255,255,0.95),
+    0 0 6px rgba(0,0,0,0.35);
 }
-
 .price,
 .product-price,
 .cart-item-price {
-    text-shadow:
-        0 0 2px rgba(255,255,255,0.7),
-        0 0 10px rgba(212,175,55,0.7);
-}
-
-/* 9) Fondo tipo mosaic suave (opcional, se mezcla con el actual) */
-body {
-    background-image:
-        radial-gradient(circle at 0 0, #fdf7ed 0%, #f5f0e8 40%, #efe2cc 100%),
-        linear-gradient(45deg, rgba(212,175,55,0.06) 25%, transparent 25%, transparent 50%, rgba(212,175,55,0.06) 50%, rgba(212,175,55,0.06) 75%, transparent 75%, transparent);
-    background-size: auto, 26px 26px;
-    background-attachment: fixed;
-}
-
-/* 10) Mosaic algo más fuerte solo en hero (más joyería / textura) */
-.hero {
-    background-image:
-        radial-gradient(circle at 0 0, #fff9e3 0%, #f0e0c1 45%, #f5f0e8 100%),
-        linear-gradient(135deg, rgba(255,255,255,0.35) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0.35) 75%, transparent 75%, transparent);
-    background-size: auto, 22px 22px;
-}
-
-/* 11) Asegurar legibilidad de la barra de navegación sobre el nuevo fondo */
-.navbar {
-    background-color: rgba(255,255,255,0.97);
-    backdrop-filter: blur(10px);
-}
-
-/* Ajustes extra para el mensaje de “Producto no encontrado” */
-.no-results {
-  text-align: center;
-  max-width: 700px;
-  margin: 2.5rem auto;
-  padding: 1.4rem 1.6rem;
-}
-
-.no-results h2 {
-  font-size: 1.4rem;
-  margin-bottom: 0.4rem;
-}
-
-.no-results p {
-  font-size: 0.95rem;
-}
-
-/* Pequeño brillo animado en el título del mensaje */
-.no-results h2 {
-  animation: textShimmer 3s linear infinite;
-}
-/* Estilo extra para el mensaje de “Producto no encontrado” */
-.no-results {
-  text-align: center;
-  max-width: 520px;
-  margin: 2.5rem auto;
-  padding: 1.3rem 1.6rem;
-}
-
-/* Título más protagonista y elegante */
-.no-results h2 {
-  font-size: 1.45rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(90deg, #d4af37, #e3c86a, #d4af37);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
   text-shadow:
-    0 0 8px rgba(212,175,55,0.7),
-    0 0 18px rgba(212,175,55,0.45);
+    0 0 2px rgba(255,255,255,0.7),
+    0 0 10px rgba(212,175,55,0.7);
 }
 
-/* Texto corto, claro y con mejor legibilidad */
-/* Mensaje “Producto no encontrado” mejorado */
+/* ===== Card: diferencia clara zona 3D / info ===== */
+.product-viewer {
+  border-radius: 16px 16px 8px 8px;
+  border-bottom: 2px solid rgba(0,0,0,0.04);
+  background: radial-gradient(circle at 0 0, #fdf7ee 0%, #f3e4cf 45%, #f8f3e6 100%);
+  position: relative;
+  overflow: hidden;
+}
+.product-viewer model-viewer,
+.product-viewer canvas,
+.product-viewer img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+.product-info {
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(245,238,220,0.98));
+  border-radius: 14px;
+  margin-top: 0.4rem;
+  padding: 0.7rem 0.5rem 0.9rem;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+/* ===== Línea subrayado categorías y fondo ===== */
+.category-title {
+  display: inline-block;
+  padding: 0.2rem 1.2rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: #c59d32;
+  position: relative;
+}
+.category-title::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin-top: 0.35rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #e7cf7d, #d4af37, #e7cf7d);
+}
+.category-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 140%;
+  transform: translateY(-50%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(227,200,106,0.4),
+    rgba(212,175,55,0.45),
+    transparent
+  );
+  opacity: 0.35;
+  z-index: -1;
+}
+
+/* ===== Mensaje “Producto no encontrado” mejorado ===== */
 .no-results {
   text-align: center;
   max-width: 520px;
@@ -1999,8 +1780,6 @@ body {
     0 10px 32px rgba(212,175,55,0.22),
     0 0 30px rgba(212,175,55,0.18);
 }
-
-/* Título con los dos emoticonos en la misma línea */
 .no-results h2 {
   display: inline-flex;
   align-items: center;
@@ -2019,8 +1798,6 @@ body {
     0 0 8px rgba(212,175,55,0.7),
     0 0 18px rgba(212,175,55,0.45);
 }
-
-/* Emoticonos izquierda y derecha alineados con el texto */
 .no-results h2::before,
 .no-results h2::after {
   content: "✨";
@@ -2028,8 +1805,6 @@ body {
   font-size: 1.2rem;
   animation: popBounce 0.9s cubic-bezier(.33,1.3,.45,1.02) infinite alternate;
 }
-
-/* Texto con estilo más cuidado */
 .no-results p {
   font-size: 1rem;
   font-weight: 500;
@@ -2041,5 +1816,394 @@ body {
     0 0 6px rgba(0,0,0,0.12);
   font-style: italic;
 }
+
+/* ===== Footer con glow superior ===== */
+.footer {
+  box-shadow: 0 -6px 24px rgba(212,175,55,0.35);
+}
+
+/* Animación usada en ✨ (por si no la tenías ya) */
+@keyframes popBounce {
+  0% { transform: scale(0.75); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+/* Remarque general para que todos los textos se vean mejor */
+body {
+  color: #18130b;
+}
+
+/* Textos principales: párrafos y spans */
+p,
+span,
+li,
+label,
+input,
+button,
+a,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-shadow:
+    0 0 1px rgba(0,0,0,0.35),
+    0 1px 2px rgba(0,0,0,0.15);
+}
+
+/* Títulos grandes un poco más marcados */
+.hero-content h2,
+.category-title,
+.product-detail-info h1,
+.cart-container h1,
+.login-box h2 {
+  text-shadow:
+    0 0 1px rgba(0,0,0,0.45),
+    0 2px 3px rgba(0,0,0,0.35);
+}
+
+/* Asegurar lectura en botones claros */
+button,
+.btn-view,
+.btn-add-cart,
+.btn-login-submit,
+.btn-checkout,
+.btn-cart,
+.btn-login,
+.btn-back {
+  color: #211708;
+  text-shadow:
+    0 0 1px rgba(255,255,255,0.5),
+    0 0 2px rgba(0,0,0,0.4);
+}
+/* Remarque extra específico para textos de productos */
+.product-info h3,
+.product-detail-info h1,
+.cart-item-details h3 {
+  color: #1a1308;
+  text-shadow:
+    0 0 1px rgba(0,0,0,0.65),
+    0 2px 3px rgba(0,0,0,0.4);
+}
+
+.price,
+.product-price,
+.cart-item-price {
+  color: #d9b23c;
+  text-shadow:
+    0 0 1px rgba(0,0,0,0.7),
+    0 0 4px rgba(0,0,0,0.6);
+}
+/* Precios con mismo formato que los títulos de producto */
+.price,
+.product-price,
+.cart-item-price {
+  font-weight: 800;
+  color: #ffffff;             /* texto blanco */
+  text-shadow:                /* borde negro + glow */
+    1px 1px 0 #000,
+   -1px 1px 0 #000,
+    1px -1px 0 #000,
+   -1px -1px 0 #000,
+    0 0 10px rgba(0,0,0,0.7);
+}
+
+/* Si quieres mantener el tono dorado en el interior del número: */
+.price span,
+.product-price span,
+.cart-item-price span {
+  color: #f0c84a; /* opcional si usas <span> dentro del precio */
+}
+/* Precios dorado fuerte y bien visibles */
+.price,
+.product-price,
+.cart-item-price {
+  font-weight: 800;
+  color: #f5d13a;  /* dorado fuerte */
+  text-shadow:
+    1px 1px 0 #000,
+   -1px 1px 0 #000,
+    1px -1px 0 #000,
+   -1px -1px 0 #000,
+    0 0 6px rgba(0,0,0,0.55);
+}
+/* Títulos de categoría más dorados y brillantes */
+.category-title {
+  color: #f3c947;  /* dorado más vivo */
+  text-shadow:
+    0 0 2px rgba(0,0,0,0.35),
+    0 0 10px rgba(212,175,55,0.9);
+}
+
+/* ===== Nuevo estilo de precios (chip dorado) ===== */
+.price,
+.product-price,
+.cart-item-price {
+  display: inline-block;
+  margin-top: 0.1rem;
+  padding: 0.16rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  font-size: 1.05rem;
+  color: #3a2a10; /* texto oscuro para contraste */
+
+  /* Fondo dorado degradado tipo “placa” */
+  background: linear-gradient(135deg, #ffe99b 0%, #f5cf4a 40%, #d4af37 100%);
+
+  /* Borde y relieve suaves */
+  border: 1px solid rgba(160,115,20,0.9);
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.25),
+    0 0 10px rgba(212,175,55,0.75),
+    inset 0 1px 0 rgba(255,255,255,0.75);
+
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.85),
+    0 0 4px rgba(212,175,55,0.9);
+}
+
+/* Pequeño efecto al pasar el ratón sobre la card */
+.product-card:hover .price,
+.product-card:hover .product-price,
+.product-card:hover .cart-item-price {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.3),
+    0 0 14px rgba(245,210,80,0.95),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+}
+/* Botones con el mismo estilo que el precio */
+.btn-view,
+.btn-add-cart {
+  display: inline-block;
+  padding: 0.16rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  border: 1px solid rgba(160,115,20,0.9);
+  background: linear-gradient(135deg, #fff3c1 0%, #f7d965 40%, #d4af37 100%);
+  color: #3a2a10;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.25),
+    0 0 10px rgba(212,175,55,0.75),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.85),
+    0 0 4px rgba(212,175,55,0.7);
+}
+
+/* Hover a juego con el del precio */
+.btn-view:hover,
+.btn-add-cart:hover {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.3),
+    0 0 14px rgba(245,210,80,0.95),
+    inset 0 1px 0 rgba(255,255,255,1);
+}
+/* Desactivar parpadeo/animación en los botones */
+.btn-add-cart::before,
+.btn-login-submit::before,
+.btn-checkout::before,
+.btn-buy-now::before {
+  animation: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+/* Quitar cualquier animación rara en hover del botón de carrito */
+.btn-add-cart,
+.btn-add-cart:hover {
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+  animation: none !important;
+}
+
+/* Estado hover sencillo (sin parpadeo) */
+.btn-add-cart:hover {
+  transform: translateY(-1px) scale(1.03);
+  background: linear-gradient(135deg, #fff7cf 0%, #f8df7a 40%, #d8b547 100%);
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.25),
+    0 0 14px rgba(245,210,80,0.9),
+    inset 0 1px 0 rgba(255,255,255,0.95);
+}
+/* Desactivar completamente el efecto neón del botón Añadir al carrito */
+.btn-add-cart::before {
+  content: none !important;
+  animation: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+/* Seguridad extra: ningún botón usa neonBorder */
+button::before {
+  animation: none !important;
+}
+/* Apagar cualquier animación del botón de carrito */
+.btn-add-cart,
+.btn-add-cart:hover,
+.btn-add-cart:focus {
+  animation: none !important;
+}
+
+/* Por si alguna regla genérica de button lo anima */
+button,
+button:hover,
+button:focus {
+  animation-name: none !important;
+}
+/* Estilo base único para el botón de añadir al carrito */
+.btn-add-cart {
+  display: inline-block;
+  padding: 0.16rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  border: 1px solid rgba(160,115,20,0.9);
+  background: linear-gradient(135deg, #fff3c1 0%, #f7d965 40%, #d4af37 100%);
+  color: #3a2a10;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.25),
+    0 0 10px rgba(212,175,55,0.75),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.85),
+    0 0 4px rgba(212,175,55,0.7);
+
+  /* solo transiciones suaves, sin animaciones */
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+  animation: none !important;
+}
+
+/* Hover muy parecido, sin cambios bruscos de color */
+.btn-add-cart:hover,
+.btn-add-cart:focus {
+  background: linear-gradient(135deg, #fff7cf 0%, #f8df7a 40%, #d8b547 100%);
+  transform: translateY(-1px);
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.28),
+    0 0 14px rgba(245,210,80,0.9),
+    inset 0 1px 0 rgba(255,255,255,0.95);
+  animation: none !important;
+}
+/* RESET TOTAL del botón Añadir al carrito */
+.btn-add-cart,
+.btn-add-cart:hover,
+.btn-add-cart:focus,
+.btn-add-cart::before,
+.btn-add-cart::after {
+  animation: none !important;
+  background-image: none !important;
+  background: linear-gradient(135deg, #fff3c1 0%, #f7d965 40%, #d4af37 100%) !important;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.25),
+    0 0 10px rgba(212,175,55,0.75),
+    inset 0 1px 0 rgba(255,255,255,0.9) !important;
+  border: 1px solid rgba(160,115,20,0.9) !important;
+  color: #3a2a10 !important;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.85),
+    0 0 4px rgba(212,175,55,0.7) !important;
+  transform: none !important;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+/* ÚNICO cambio en hover: leve lift y un poco más de sombra */
+.btn-add-cart:hover,
+.btn-add-cart:focus {
+  transform: translateY(-1px) !important;
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.28),
+    0 0 14px rgba(245,210,80,0.9),
+    inset 0 1px 0 rgba(255,255,255,0.95) !important;
+}
+/* Desactivar por completo el borde neón animado SOLO en Añadir al carrito */
+.btn-add-cart::before {
+  content: none !important;
+  animation: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+/* Títulos de categorías ajustados */
+.category-title {
+  color: #664300 !important;     /* nuevo color */
+  text-shadow: none !important;  /* sin halo constante */
+}
+
+/* Quitar brillo/“sombra” que pasa por encima */
+.category-title::before {
+  content: none !important;      /* elimina la banda animada shimmer-slow */
+}
+/* Estado normal del bloque de botones + precio */
+.product-info {
+  box-shadow:
+    0 4px 10px rgba(102,67,0,0.22),
+    0 0 6px rgba(102,67,0,0.35);
+  transform: translateY(-1px);
+}
+
+/* ESTILO COMÚN PARA LOS DOS BOTONES PRINCIPALES */
+.btn-add-cart,
+.btn-view {
+  display: inline-block;
+  padding: 0.16rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+
+  color: #3a2a10;
+  background: linear-gradient(135deg, #fff3c1 0%, #f7d965 40%, #d4af37 100%);
+  border: 1px solid rgba(160,115,20,0.9);
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.25),
+    0 0 10px rgba(212,175,55,0.75),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.85),
+    0 0 4px rgba(212,175,55,0.7);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+/* HOVER IDÉNTICO PARA AMBOS */
+.btn-add-cart:hover,
+.btn-add-cart:focus,
+.btn-view:hover,
+.btn-view:focus {
+  background: linear-gradient(135deg, #fff7cf 0%, #f8df7a 40%, #d8b547 100%);
+  transform: translateY(-1px) scale(1.03);
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.28),
+    0 0 14px rgba(245,210,80,0.9),
+    inset 0 1px 0 rgba(255,255,255,0.95);
+  color: #664300 !important;
+}
+/* Mismo zoom de hover para ambos botones */
+.btn-add-cart:hover,
+.btn-add-cart:focus,
+.btn-view:hover,
+.btn-view:focus {
+  transform: translateY(-1px) scale(1.03) !important;
+}
+
 
 

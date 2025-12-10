@@ -1,10 +1,6 @@
-/* ============================================================
-   SHINYWEB - main.js
-   ============================================================ */
-
 const products = {
   1: {
-    name: 'Anillo Elegance',
+    name: 'Anillo java',
     price: 349.99,
     model: 'anillo1.glb',
     category: 'anillos',
@@ -12,17 +8,17 @@ const products = {
     features: ['Oro blanco 18k', 'Diamantes certificados 0.5ct', 'Garantía de por vida', 'Estuche incluido']
   },
   2: {
-    name: 'Anillo Royal',
+    name: 'Anillo Flutter',
     price: 429.99,
-    model: 'anilloplata2.glb',
+    model: 'models/anilloplata2.glb',
     category: 'anillos',
     description: 'Anillo de plata con diseño exclusivo. Pieza única inspirada en diseños reales.',
     features: ['Plata 925', 'Diseño exclusivo', 'Certificado de autenticidad', 'Ajuste gratuito']
   },
   3: {
-    name: 'Pulsera Sparkle',
+    name: 'Pulsera Blender',
     price: 289.99,
-    model: 'pulseraplata1.glb',
+    model: 'models/pulseraplata1.glb',
     category: 'pulseras',
     description: 'Pulsera de plata que brilla con cada movimiento. Perfecta para el día a día con elegancia.',
     features: ['Plata 925', 'Diseño brillante', 'Cierre de seguridad', 'Longitud ajustable']
@@ -30,143 +26,227 @@ const products = {
   4: {
     name: 'Pulsera Diamond',
     price: 389.99,
-    model: 'pulseraplata2.glb',
+    model: 'models/pulseraplata2.glb',
     category: 'pulseras',
     description: 'Pulsera de lujo con diseño engastado. Diseño moderno y sofisticado.',
     features: ['Plata 925', 'Diseño premium', 'Diseño exclusivo', 'Grabado personalizado']
   },
   5: {
-    name: 'Pendientes Shine',
+    name: 'Pendientes Shiny',
     price: 259.99,
-    model: 'pendientesplata1.glb',
+    model: 'models/pendientesplata1.glb',
     category: 'pendientes',
     description: 'Pendientes de plata elegantes. Elegancia clásica que nunca pasa de moda.',
     features: ['Plata 925', 'Diseño clásico', 'Cierre de seguridad', 'Hipoalergénicos']
   },
   6: {
-    name: 'Pendientes Luxury',
+    name: 'Pendientes Shiny Premium',
     price: 329.99,
-    model: 'pendientesplata2.glb',
+    model: 'models/pendientesplata2.glb',
     category: 'pendientes',
     description: 'Pendientes largos de plata. Lujo y distinción en cada detalle.',
     features: ['Plata 925', 'Diseño largo', 'Acabado brillante', 'Edición limitada']
   }
 };
 
-/* ============================================================
-   INICIALIZACIÓN
-   ============================================================ */
-
 document.addEventListener('DOMContentLoaded', function () {
   console.log('Inicializando ShinyWeb...');
   updateCartCount();
+
+  // visores 3D en la página principal
+  Object.keys(products).forEach(id => {
+    const product = products[id];
+    const viewerId =
+      'viewer-' + product.category + (id <= 2 ? id : id - 2 * Math.floor((id - 1) / 2));
+    const container = document.getElementById(viewerId);
+
+    if (container) {
+      console.log('Cargando modelo: ' + product.model + ' en ' + viewerId);
+      initViewer(container, product.model);
+    }
+  });
+
+  // scroll suave
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
   initSearch();
 });
 
-/* ============================================================
-   BUSCADOR CON MENSAJE “NO RESULTADOS”
-   ============================================================ */
+function initViewer(container, modelPath) {
+  // Limpia el contenedor por si ya tenía algo
+  container.innerHTML = '';
+
+  const viewer = document.createElement('model-viewer');
+  viewer.setAttribute('src', modelPath);
+  viewer.setAttribute('alt', 'Vista 3D del producto');
+  viewer.setAttribute('auto-rotate', '');
+  viewer.setAttribute('camera-controls', '');
+  viewer.setAttribute('shadow-intensity', '1');
+  viewer.style.width = '100%';
+  viewer.style.height = '100%';
+  viewer.style.borderRadius = '15px';
+
+  container.appendChild(viewer);
+}
 
 function initSearch() {
   const searchInput = document.getElementById('searchInput');
-  if (!searchInput) return;
 
-  const noResultsBox = document.getElementById('noResults');
+  if (!searchInput) {
+    console.error('No se encontró el input de búsqueda');
+    return;
+  }
+
+  console.log('Buscador inicializado');
 
   searchInput.addEventListener('input', function () {
     const searchTerm = this.value.toLowerCase().trim();
-    const cards = document.querySelectorAll('.product-card');
-    const sections = document.querySelectorAll('.category-section');
+    console.log('Buscando: ' + searchTerm);
 
-    let visibleCards = 0;
+    const allCards = document.querySelectorAll('.product-card');
+    const allSections = document.querySelectorAll('.category-section');
 
-    cards.forEach(card => {
-      const name = (card.dataset.name || '').toLowerCase();
-      const category = (card.dataset.category || '').toLowerCase();
-      const matches =
-        !searchTerm ||
-        name.includes(searchTerm) ||
-        category.includes(searchTerm);
+    const existingNoResults = document.querySelector('.no-results');
+    if (existingNoResults) {
+      existingNoResults.remove();
+    }
 
-      card.classList.toggle('hidden', !matches);
-      if (matches) visibleCards++;
-    });
+    if (searchTerm === '') {
+      allCards.forEach(card => card.classList.remove('hidden'));
+      allSections.forEach(section => section.classList.remove('hidden'));
+      return;
+    }
 
-    sections.forEach(section => {
-      const hasVisible = section.querySelectorAll('.product-card:not(.hidden)').length > 0;
-      section.style.display = hasVisible ? 'block' : 'none';
-    });
+    let hasResults = false;
 
-    // Mensaje vistoso cuando no hay productos
-    if (noResultsBox) {
-      if (searchTerm && visibleCards === 0) {
-        noResultsBox.style.display = 'block';
-        noResultsBox.style.animation = 'fadeBounceIn 1.2s cubic-bezier(.37,1.12,.91,.91)';
+    allCards.forEach(card => {
+      const productName = card.getAttribute('data-name');
+      const category = card.getAttribute('data-category');
+
+      if (productName.includes(searchTerm) || category.includes(searchTerm)) {
+        card.classList.remove('hidden');
+        hasResults = true;
       } else {
-        noResultsBox.style.display = 'none';
+        card.classList.add('hidden');
       }
+    });
+
+    allSections.forEach(section => {
+      const visibleCards = section.querySelectorAll('.product-card:not(.hidden)');
+      if (visibleCards.length === 0) {
+        section.classList.add('hidden');
+      } else {
+        section.classList.remove('hidden');
+      }
+    });
+
+    if (!hasResults) {
+      const noResultsDiv = document.createElement('div');
+      noResultsDiv.className = 'no-results';
+      noResultsDiv.innerHTML =
+        '<h3>😔 No se encontraron resultados</h3><p>Intenta buscar: "anillo", "pulsera" o "pendiente"</p>';
+
+      const container = document.querySelector('.products-container');
+      const firstSection = container.querySelector('.category-section');
+      container.insertBefore(noResultsDiv, firstSection);
     }
   });
 }
-
-/* ============================================================
-   NAVEGACIÓN A LA PÁGINA DE DETALLE
-   ============================================================ */
 
 function viewProduct(id) {
   window.location.href = 'producto.html?id=' + id;
 }
 
-/* ============================================================
-   DETALLE DE PRODUCTO
-   ============================================================ */
+function addToCart(id) {
+  const product = products[id];
+  if (!product) return;
 
+  let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  const existingItem = cart.find(item => item.id === id);
+
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({
+      id: id,
+      name: product.name,
+      price: product.price,
+      model: product.model,
+      quantity: 1
+    });
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartCount();
+  showNotification(product.name + ' añadido al carrito');
+}
+
+// DETALLE DE PRODUCTO (nombre, texto y modelo 3D)
 function loadProductDetail(id) {
   const product = products[id];
   if (!product) {
-    window.location.href = 'index.html';
+    window.location.href = 'producto.html'; // volver a la lista si no hay producto
     return;
   }
 
+  // Texto
   document.getElementById('productName').textContent = product.name;
   document.getElementById('productPrice').textContent = product.price + ' €';
   document.getElementById('productDescription').textContent = product.description;
 
   const featuresList = document.getElementById('productFeatures');
   featuresList.innerHTML = product.features
-    .map(f => `<li>${f}</li>`)
+    .map(f => '<li>' + f + '</li>')
     .join('');
 
-  const viewer = document.getElementById('productViewer');
-  if (viewer) {
-    viewer.innerHTML = `
-      <model-viewer
-        src="${product.model}"
-        alt="${product.name}"
-        auto-rotate
-        camera-controls
-        exposure="1.1"
-        environment-image="neutral"
-      ></model-viewer>
-    `;
+  // VISOR 3D EN DETALLE
+  const viewerContainer = document.getElementById('productViewer');
+  if (viewerContainer) {
+    initViewer(viewerContainer, product.model);
   }
+
+  // guardar el id actual por si se usa addToCartFromDetail
+  window.currentProductId = id;
 }
 
-/* ============================================================
-   CARRITO (se apoya en cart.js)
-   ============================================================ */
-
-function addToCart(id) {
-  if (typeof window.addProductToCart === 'function') {
-    window.addProductToCart(id);
-    updateCartCount();
+function addToCartFromDetail() {
+  if (window.currentProductId) {
+    addToCart(window.currentProductId);
   }
 }
 
 function updateCartCount() {
-  if (typeof window.getCartCount === 'function') {
-    const count = window.getCartCount();
-    const span = document.getElementById('cartCount');
-    if (span) span.textContent = count;
-  }
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const countElements = document.querySelectorAll('.cart-count');
+  countElements.forEach(el => {
+    el.textContent = totalItems;
+  });
 }
+
+function showNotification(message) {
+  const notification = document.createElement('div');
+  notification.style.cssText =
+    'position: fixed; top: 100px; right: 20px; background: var(--gold); color: var(--text-dark); padding: 1rem 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 10000; font-weight: bold; animation: slideIn 0.3s ease;';
+  notification.textContent = message;
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.style.animation = 'slideOut 0.3s ease';
+    setTimeout(() => notification.remove(), 300);
+  }, 2000);
+}
+
+const style = document.createElement('style');
+style.textContent =
+  '@keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } } @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(400px); opacity: 0; } }';
+document.head.appendChild(style);
+// viewer3D.js

@@ -1,11 +1,11 @@
 // ======= Catálogo de productos con modelos 3D =======
 const PRODUCT_CATALOG = {
-  1: { nombre: "Anillo Elegance", precio: 349.99, model: "anillo1.glb" },
-  2: { nombre: "Anillo Royal", precio: 429.99, model: "anilloplata2.glb" },
-  3: { nombre: "Pulsera Sparkle", precio: 289.99, model: "pulseraplata1.glb" },
+  1: { nombre: "Anillo JAVA", precio: 349.99, model: "anillo1.glb" },
+  2: { nombre: "Anillo FLUTTER ", precio: 429.99, model: "anilloplata2.glb" },
+  3: { nombre: "Pulsera BLENDER", precio: 289.99, model: "pulseraplata1.glb" },
   4: { nombre: "Pulsera Diamond", precio: 389.99, model: "pulseraplata2.glb" },
-  5: { nombre: "Pendientes Shine", precio: 259.99, model: "pendientesplata1.glb" },
-  6: { nombre: "Pendientes Luxury", precio: 329.99, model: "pendientesplata2.glb" }
+  5: { nombre: "Pendientes SHINY", precio: 259.99, model: "pendientesplata1.glb" },
+  6: { nombre: "Pendientes SHINY PREMIUM", precio: 329.99, model: "pendientesplata2.glb" }
 };
 
 const CART_KEY = "cart";
@@ -54,7 +54,7 @@ function addToCart(id) {
 // ======= Renderizar carrito =======
 function renderCart() {
   const cart = getCart();
-  const container = document.getElementById("cartItems");
+  const container = document.getElementById("cartItems");  
   const subtotalEl = document.getElementById("subtotal");
   const totalEl = document.getElementById("total");
 
@@ -65,7 +65,7 @@ function renderCart() {
   if (cart.length === 0) {
     container.innerHTML = `
       <div class="empty-cart">
-        <h2>🛒 Tu carrito está vacío</h2>
+        <h2>🛒 Tu carrito está vacío</h2><br>
         <p>Cuando añadas productos desde la tienda aparecerán aquí.</p>
       </div>`;
     subtotalEl.textContent = "0.00 €";
@@ -102,11 +102,11 @@ function renderCart() {
         <div class="cart-item-details">
           <h3>${data.nombre}</h3>
           <span class="cart-item-price">${precio.toFixed(2)} €</span>
-
+          
           <div class="quantity-controls">
-            <button onclick="changeQty(${item.id}, -1)">-</button>
-            <span>${cantidad}</span>
-            <button onclick="changeQty(${item.id}, 1)">+</button>
+            <button onclick="changeQty(${item.id}, -1)">-</button><br>
+            <br><span>${cantidad}</span><br>
+            <br><button onclick="changeQty(${item.id}, 1)">+</button>
           </div>
         </div>
 

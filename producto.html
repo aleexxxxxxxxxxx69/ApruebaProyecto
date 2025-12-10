@@ -10,6 +10,9 @@
   <script type="module"
     src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
   </script>
+
+  <!-- main con lógica de productos -->
+  <script src="main.js" defer></script>
 </head>
 
 <body>
@@ -17,9 +20,7 @@
   <nav class="navbar">
     <div class="nav-container">
       <div class="logo">
-        <div class="logo">
-                <h1>✨ShinyWeb</h1>
-            </div>
+        <h1>✨ShinyWeb</h1>
       </div>
       <div>
         <a href="index.html" class="btn-back">← Volver</a>
@@ -35,19 +36,7 @@
     <div class="product-detail-grid">
 
       <!-- VISOR 3D -->
-      <div class="product-detail-viewer">
-        <model-viewer
-          id="detailViewer"
-          src=""
-          alt="Producto 3D"
-          auto-rotate
-          camera-controls
-          background-color="#0f0f1e"
-          shadow-intensity="1"
-          loading="eager"
-          style="width: 100%; height: 350px; border-radius: 15px;">
-        </model-viewer>
-      </div>
+    <div class="product-detail-viewer" id="productViewer"></div>
 
       <!-- INFORMACIÓN DEL PRODUCTO -->
       <div class="product-detail-info">
@@ -65,28 +54,49 @@
         </div>
 
         <div class="product-actions">
-          <button class="btn-add-cart-large" onclick="addToCartFromDetail()">
-            Añadir al Carrito
+          <button class="btn-add-cart-large" id="btnAddDetail">
+            🛒 AÑADIR AL CARRITO
           </button>
-          <button class="btn-buy-now">Comprar Ahora</button>
+          <button class="btn-buy-now" id="btnBuyNow">
+            COMPRAR AHORA
+          </button>
         </div>
       </div>
 
     </div>
   </main>
 
-  <!-- SCRIPTS -->
+  <!-- SCRIPTS ESPECÍFICOS DE ESTA PÁGINA -->
   <script src="cart.js"></script>
-  <script src="main.js"></script>
 
-  <!-- CARGA DEL PRODUCTO -->
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = parseInt(urlParams.get("id"));
-    if (productId) {
-      loadProductDetail(productId);
-    }
-  </script>
+    // ID del producto desde la URL
+    const params = new URLSearchParams(window.location.search);
+    const productIdFromUrl = parseInt(params.get('id'), 10);
 
+    document.addEventListener('DOMContentLoaded', () => {
+      // Cargar datos del producto y modelo 3D
+      if (!isNaN(productIdFromUrl)) {
+        loadProductDetail(productIdFromUrl);
+      }
+
+      // Botones de acciones
+      const btnAddDetail = document.getElementById('btnAddDetail');
+      const btnBuyNow = document.getElementById('btnBuyNow');
+
+      if (btnAddDetail) {
+        btnAddDetail.addEventListener('click', () => {
+          addToCart(productIdFromUrl);   // misma función que en el index
+        });
+      }
+
+      if (btnBuyNow) {
+        btnBuyNow.addEventListener('click', () => {
+          addToCart(productIdFromUrl);   // añade al carrito
+          window.location.href = 'carrito.html';
+        });
+      }
+    });
+  </script>
 </body>
 </html>
