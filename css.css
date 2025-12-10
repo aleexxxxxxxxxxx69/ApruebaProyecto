@@ -1799,5 +1799,247 @@ input:focus-visible {
 .footer {
     box-shadow: 0 -6px 24px rgba(212,175,55,0.35);
 }
+/* =========================
+   MEJORAS UI ESPECÍFICAS
+   ========================= */
+
+/* 1) Botones barra navegación mejorados (no genéricos) */
+.nav-menu a {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    padding: 0.45rem 1.1rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: radial-gradient(circle at 0 0, rgba(255,255,255,0.7), rgba(245,240,232,0.8));
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+    border-color: rgba(212,175,55,0.9);
+    box-shadow: 0 6px 18px rgba(212,175,55,0.35);
+}
+
+/* 2) Botones derecha navbar más claros y “premium” */
+.nav-actions .btn-login,
+.nav-actions .btn-cart {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding-inline: 1.4rem;
+    border: 1px solid rgba(255,255,255,0.7);
+    box-shadow:
+        0 0 12px rgba(212,175,55,0.65),
+        0 8px 18px rgba(0,0,0,0.25);
+}
+
+.nav-actions .btn-login:hover,
+.nav-actions .btn-cart:hover {
+    border-color: rgba(212,175,55,0.95);
+}
+
+/* 3) Colores de texto con más contraste (sin cambiar paleta base) */
+body {
+    color: #201a10;
+}
+
+.hero-content p,
+.product-description p,
+.product-features li,
+.cart-item-details h3,
+.footer p {
+    color: #3a3224;
+}
+
+.price,
+.product-price,
+.cart-item-price {
+    color: #d9b23c;
+}
+
+/* 4) Card ítems: separar claramente zona 3D y zona info */
+.product-viewer {
+    border-radius: 10px 10px 6px 6px;
+    border-bottom: 2px solid rgba(0,0,0,0.04);
+}
+
+.product-info {
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(245,238,220,0.98));
+    border-radius: 10px;
+    margin-top: 0.4rem;
+    padding: 0.7rem 0.5rem 0.9rem;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+/* 5) Desactivar cualquier panel raro al hacer hover en cards */
+.product-card::before {
+    /* se mantiene el brillo, pero bajamos fuerza para que parezca solo halo */
+    opacity: 0.4;
+}
+
+/* 6) Línea subrayado categorías hasta todo el texto */
+.category-title {
+    display: inline-block;
+    padding: 0.2rem 1.2rem;
+}
+
+.category-title::after {
+    width: 100%;
+    height: 2px;
+    margin-top: 0.35rem;
+}
+
+/* 7) Color de la línea animada de fondo (títulos) un poco más suave */
+.category-title::before {
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(227,200,106,0.85),
+        rgba(212,175,55,0.9),
+        transparent
+    );
+}
+
+/* 8) Reborde en textos clave (nombres y precios) */
+.product-info h3,
+.product-detail-info h1,
+.cart-item-details h3 {
+    text-shadow:
+        0 0 1px rgba(255,255,255,0.95),
+        0 0 6px rgba(0,0,0,0.35);
+}
+
+.price,
+.product-price,
+.cart-item-price {
+    text-shadow:
+        0 0 2px rgba(255,255,255,0.7),
+        0 0 10px rgba(212,175,55,0.7);
+}
+
+/* 9) Fondo tipo mosaic suave (opcional, se mezcla con el actual) */
+body {
+    background-image:
+        radial-gradient(circle at 0 0, #fdf7ed 0%, #f5f0e8 40%, #efe2cc 100%),
+        linear-gradient(45deg, rgba(212,175,55,0.06) 25%, transparent 25%, transparent 50%, rgba(212,175,55,0.06) 50%, rgba(212,175,55,0.06) 75%, transparent 75%, transparent);
+    background-size: auto, 26px 26px;
+    background-attachment: fixed;
+}
+
+/* 10) Mosaic algo más fuerte solo en hero (más joyería / textura) */
+.hero {
+    background-image:
+        radial-gradient(circle at 0 0, #fff9e3 0%, #f0e0c1 45%, #f5f0e8 100%),
+        linear-gradient(135deg, rgba(255,255,255,0.35) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0.35) 75%, transparent 75%, transparent);
+    background-size: auto, 22px 22px;
+}
+
+/* 11) Asegurar legibilidad de la barra de navegación sobre el nuevo fondo */
+.navbar {
+    background-color: rgba(255,255,255,0.97);
+    backdrop-filter: blur(10px);
+}
+
+/* Ajustes extra para el mensaje de “Producto no encontrado” */
+.no-results {
+  text-align: center;
+  max-width: 700px;
+  margin: 2.5rem auto;
+  padding: 1.4rem 1.6rem;
+}
+
+.no-results h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.no-results p {
+  font-size: 0.95rem;
+}
+
+/* Pequeño brillo animado en el título del mensaje */
+.no-results h2 {
+  animation: textShimmer 3s linear infinite;
+}
+/* Estilo extra para el mensaje de “Producto no encontrado” */
+.no-results {
+  text-align: center;
+  max-width: 520px;
+  margin: 2.5rem auto;
+  padding: 1.3rem 1.6rem;
+}
+
+/* Título más protagonista y elegante */
+.no-results h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(90deg, #d4af37, #e3c86a, #d4af37);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow:
+    0 0 8px rgba(212,175,55,0.7),
+    0 0 18px rgba(212,175,55,0.45);
+}
+
+/* Texto corto, claro y con mejor legibilidad */
+/* Mensaje “Producto no encontrado” mejorado */
+.no-results {
+  text-align: center;
+  max-width: 520px;
+  margin: 2.5rem auto;
+  padding: 1.3rem 1.6rem;
+  border-radius: 14px;
+  border: 1.5px solid rgba(212,175,55,0.55);
+  box-shadow:
+    0 10px 32px rgba(212,175,55,0.22),
+    0 0 30px rgba(212,175,55,0.18);
+}
+
+/* Título con los dos emoticonos en la misma línea */
+.no-results h2 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(90deg, #d4af37, #e3c86a, #d4af37);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow:
+    0 0 8px rgba(212,175,55,0.7),
+    0 0 18px rgba(212,175,55,0.45);
+}
+
+/* Emoticonos izquierda y derecha alineados con el texto */
+.no-results h2::before,
+.no-results h2::after {
+  content: "✨";
+  display: inline-block;
+  font-size: 1.2rem;
+  animation: popBounce 0.9s cubic-bezier(.33,1.3,.45,1.02) infinite alternate;
+}
+
+/* Texto con estilo más cuidado */
+.no-results p {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #3a3122;
+  letter-spacing: 0.03em;
+  line-height: 1.55;
+  text-shadow:
+    0 1px 2px rgba(255,255,255,0.8),
+    0 0 6px rgba(0,0,0,0.12);
+  font-style: italic;
+}
 
 
