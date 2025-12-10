@@ -1,3 +1,11 @@
+// Aplicar tema guardado en login
+(function() {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+  }
+})();
+
 function handleLogin(event) {
     event.preventDefault();
     

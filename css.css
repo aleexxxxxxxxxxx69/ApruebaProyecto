@@ -55,26 +55,68 @@ body:hover .navbar {
 }
 
 .nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1.2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.4rem 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+/* el bloque central ocupa el espacio flexible */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex: 1;                   /* clave: se adapta al espacio restante */
+  justify-content: center;   /* centra INICIO, ANILLOS, etc. */
+}
+
+/* bloque derecho compacto */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Botones tipo pastilla (login, carrito, tabs) */
+.nav-links a,
+.btn-login,
+.btn-cart {
+  padding: 0.45rem 1.1rem;    /* antes algo más grande */
+  font-size: 0.8rem;          /* baja un poco la fuente */
+}
+
+/* Botón modo oscuro */
+.btn-theme-toggle {
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.50rem;         /* algo más pequeño para que quepa */
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #2d2b3a, #4b3f60);
+  color: #f9f3e7;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
 
 .logo {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* antes seguramente tenía más padding */
+  margin-right: 1.5rem;      /* espacio, pero sin ocupar media barra */
 }
 
 .logo h1 {
-    color: var(--brown-accent);
-    font-size: 1.7rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+  font-size: 1.4rem;         /* baja un poco el tamaño */
 }
+
+.logo-subtitle {
+  font-size: 0.7rem;
+}
+
 
 .tagline {
     font-size: 0.8rem;
@@ -2205,5 +2247,77 @@ button:focus {
   transform: translateY(-1px) scale(1.03) !important;
 }
 
+/* Botón modo oscuro */
+.btn-theme-toggle {
+  margin-right: 0.8rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #2d2b3a, #4b3f60);
+  color: #f9f3e7;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+/* Estado oscuro general */
+body.dark-mode {
+  background: radial-gradient(circle at top, #1d1825 0%, #0f0a16 45%, #07040b 100%);
+  color: #f6efe2;
+}
+
+/* Algunas zonas clave en oscuro */
+body.dark-mode .navbar {
+  background: rgba(15, 10, 22, 0.92);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+}
+
+body.dark-mode .product-card,
+body.dark-mode .cart-items,
+body.dark-mode .cart-summary,
+body.dark-mode .product-detail-grid {
+  background: #171320;
+  border-color: #3b314b;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.6);
+}
+
+body.dark-mode .price,
+body.dark-mode .product-price,
+body.dark-mode .cart-item-price {
+  color: #ffd86a;
+}
+
+body.dark-mode .search-input {
+  background-color: #1f1828;
+  border-color: #7154c7;
+  color: #f6efe2;
+}
+
+body.dark-mode .search-input::placeholder {
+  color: #b9a8ff;
+}
+
+body.dark-mode .btn-view,
+body.dark-mode .btn-add-cart,
+body.dark-mode .btn-add-cart-large,
+body.dark-mode .btn-buy-now,
+body.dark-mode .btn-checkout {
+  background: linear-gradient(135deg, #5e4bb8, #b48cff);
+  color: #120c1c;
+}
+.nav-links a,
+.btn-login,
+.btn-cart,
+.btn-theme-toggle {
+  padding: 0.55rem 1.3rem;   /* aún “estirados”, pero no exagerado */
+  font-size: 0.8rem;
+}
+/* Nombre de producto en carrito – modo oscuro */
+body.dark-mode .cart-item-details h3 {
+  color: #ffd86a;   /* dorado intenso pero no oscuro */
+}
 
 

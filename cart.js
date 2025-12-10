@@ -1,3 +1,11 @@
+// Aplicar tema guardado en la página del carrito
+(function () {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+  }
+})();
+
 // ======= Catálogo de productos con modelos 3D =======
 const PRODUCT_CATALOG = {
   1: { nombre: "Anillo JAVA", precio: 349.99, model: "anillo1.glb" },

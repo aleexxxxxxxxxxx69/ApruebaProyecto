@@ -1,3 +1,11 @@
+// Aplicar tema guardado en todas las páginas que usan main.js
+(function() {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+  }
+})();
+
 const products = {
   1: {
     name: 'Anillo java',
@@ -250,3 +258,20 @@ style.textContent =
   '@keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } } @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(400px); opacity: 0; } }';
 document.head.appendChild(style);
 // viewer3D.js
+// ---- Toggle modo oscuro ----
+// ---- Toggle modo oscuro ----
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.getElementById('themeToggle');
+  if (!toggle) return;
+
+  if (document.body.classList.contains('dark-mode')) {
+    toggle.textContent = '☀️ Modo claro';
+  }
+
+  toggle.addEventListener('click', () => {
+    const isDark = document.body.classList.toggle('dark-mode');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    toggle.textContent = isDark ? '☀️ Modo claro' : '🌙 Modo oscuro';
+  });
+});
+
