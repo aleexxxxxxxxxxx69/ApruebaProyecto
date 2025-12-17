@@ -356,7 +356,7 @@ body:hover .hero {
 
 .category-title {
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: var(--brown-accent);
     margin-bottom: 1rem;
     text-transform: uppercase;
@@ -493,11 +493,12 @@ body:hover .hero {
 
 
 .price {
-    font-size: 1.4rem;
-    color: var(--gold);
-    margin-bottom: 0.8rem;
-    font-weight: bold;
+  font-size: 1.4rem;
+  color: #000000;   
+  margin-bottom: 0.8rem;
+  font-weight: bold;
 }
+
 
 /* botones de producto */
 .btn-view,
@@ -2269,55 +2270,248 @@ body.dark-mode {
   color: #f6efe2;
 }
 
-/* Algunas zonas clave en oscuro */
+/* ===== MODO OSCURO SIN NINGÚN BLANCO ===== */
+
+/* Fondo global */
+body.dark-mode {
+  background: radial-gradient(circle at top, #120d1d 0%, #080510 45%, #040208 100%);
+  color: #f5e9d9;
+}
+
+/* CABECERA: barra y fondo superior */
 body.dark-mode .navbar {
-  background: rgba(15, 10, 22, 0.92);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  background: #120d1d;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.7);
 }
 
-body.dark-mode .product-card,
+/* Fondo que hay por detrás de la navbar y las tarjetas */
+body.dark-mode .hero,
+body.dark-mode .products-container,
+body.dark-mode .category-section {
+  background: transparent;
+}
+
+/* TARJETAS GRANDES DE PRODUCTO (las que se ven blancas en la captura) */
+body.dark-mode .product-card {
+  background: radial-gradient(circle at 30% 0%, #262033 0%, #181222 55%, #120e1b 100%) !important;
+  border: 1px solid #3b314b;
+  box-shadow: 0 18px 36px rgba(0,0,0,0.8);
+  color: #f7f1e6;
+}
+
+/* Títulos dentro de la tarjeta */
+body.dark-mode .product-card h3 {
+  color: #fdf7e5;
+  text-shadow: 0 0 10px rgba(0,0,0,0.9);
+}
+
+/* Cualquier bloque que use fondo blanco/beige claro */
+body.dark-mode .product-card .product-info,
+body.dark-mode .cart-item,
+body.dark-mode .cart-item-image {
+  background: transparent !important;
+}
+
+/* Links del menú (INICIO, ANILLOS...) para que no tengan pastilla blanca detrás */
+body.dark-mode .nav-menu a {
+  background: #2a2437;
+  color: #f4ecdd;
+}
+
+/* Texto secundario */
+body.dark-mode p,
+body.dark-mode .tagline {
+  color: #e9ddcc;
+}
+/* ===== CARRITO EN MODO OSCURO ===== */
+
+/* Contenedor general del carrito */
+body.dark-mode .cart-container {
+  background: transparent;
+  color: #f5e9d9;
+}
+
+/* Paneles principales del carrito */
 body.dark-mode .cart-items,
-body.dark-mode .cart-summary,
-body.dark-mode .product-detail-grid {
-  background: #171320;
+body.dark-mode .cart-summary {
+  background: radial-gradient(circle at 20% 0%, #262033 0%, #181222 55%, #120e1b 100%);
   border-color: #3b314b;
-  box-shadow: 0 10px 26px rgba(0,0,0,0.6);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.8);
 }
 
-body.dark-mode .price,
-body.dark-mode .product-price,
+/* Cada línea de producto del carrito */
+body.dark-mode .cart-item {
+  background: #1a1425;
+  border-bottom-color: #3b314b;
+}
+
+/* Bloque de la imagen 3D en el carrito */
+body.dark-mode .cart-item-image {
+  background: radial-gradient(circle at 30% 15%, #221a35 0%, #181222 60%, #120e1b 100%);
+  box-shadow: 0 0 14px 2px rgba(0,0,0,0.7);
+}
+
+/* Nombre del producto + textos dentro de la línea */
+body.dark-mode .cart-item-details h3 {
+  color: #fdf7e5;
+}
+
+body.dark-mode .cart-item-details p,
+body.dark-mode .quantity-controls span,
+body.dark-mode .cart-item-total {
+  color: #e9ddcc;
+}
+
+/* Precio en dorado brillante */
 body.dark-mode .cart-item-price {
+  color: #664300;
+}
+
+/* Botones +/- cantidad */
+body.dark-mode .quantity-controls button {
+  background-color: #ffd86a;
+  color: #3a2b15;
+}
+
+/* Botón eliminar en rojo pero adaptado al oscuro */
+body.dark-mode .cart-item-remove {
+  background-color: #e74c3c;
+}
+
+/* Panel resumen (totales) */
+body.dark-mode .cart-summary h2,
+body.dark-mode .summary-line span {
+  color: #f5e9d9;
+}
+
+body.dark-mode .summary-line.total {
   color: #ffd86a;
 }
 
-body.dark-mode .search-input {
+/* Botón checkout */
+body.dark-mode .btn-checkout {
+  background: linear-gradient(135deg, #ffd86a, #f5c452);
+  color: #3a2b15;
+}
+/* Footer en modo oscuro */
+body.dark-mode .footer {
+  background: #120d1d;
+  color: #f5e9d9;
+  border-top: 1px solid #3b314b;
+  box-shadow: 0 -8px 24px rgba(0,0,0,0.8);
+}
+/* ===== LOGIN EN MODO OSCURO ===== */
+
+/* Fondo general de la página de login */
+body.dark-mode .login-page,
+body.dark-mode .login-body {
+  background: radial-gradient(circle at top, #120d1d 0%, #080510 45%, #040208 100%);
+}
+
+/* Tarjeta del formulario (el recuadro grande blanco) */
+body.dark-mode .login-container,
+body.dark-mode .form-container {
+  background: radial-gradient(circle at 20% 0%, #262033 0%, #181222 55%, #120e1b 100%);
+  border: 1px solid #3b314b;
+  box-shadow: 0 18px 36px rgba(0,0,0,0.8);
+  color: #f5e9d9;
+}
+
+/* Título "Iniciar sesión" */
+body.dark-mode .login-title {
+  color: #fdf7e5;
+  text-shadow: 0 0 10px rgba(0,0,0,0.9);
+}
+
+/* Labels: Email, Contraseña */
+body.dark-mode .login-form label {
+  color: #e9ddcc;
+}
+
+/* Inputs */
+body.dark-mode .login-form input[type="email"],
+body.dark-mode .login-form input[type="password"] {
   background-color: #1f1828;
-  border-color: #7154c7;
+  border: 1px solid #7154c7;
   color: #f6efe2;
 }
 
-body.dark-mode .search-input::placeholder {
+body.dark-mode .login-form input::placeholder {
   color: #b9a8ff;
 }
 
-body.dark-mode .btn-view,
-body.dark-mode .btn-add-cart,
-body.dark-mode .btn-add-cart-large,
-body.dark-mode .btn-buy-now,
-body.dark-mode .btn-checkout {
-  background: linear-gradient(135deg, #5e4bb8, #b48cff);
-  color: #120c1c;
-}
-.nav-links a,
-.btn-login,
-.btn-cart,
-.btn-theme-toggle {
-  padding: 0.55rem 1.3rem;   /* aún “estirados”, pero no exagerado */
-  font-size: 0.8rem;
-}
-/* Nombre de producto en carrito – modo oscuro */
-body.dark-mode .cart-item-details h3 {
-  color: #ffd86a;   /* dorado intenso pero no oscuro */
+/* Botón ENTRAR */
+body.dark-mode .login-form button[type="submit"] {
+  background: linear-gradient(135deg, #ffd86a, #f5c452);
+  color: #3a2b15;
 }
 
+/* Texto "¿No tienes cuenta? Regístrate aquí" */
+body.dark-mode .login-footer-text,
+body.dark-mode .login-footer-text a {
+  color: #ffd86a;
+}
+
+/* Precio  en modo oscuro */
+body.dark-mode .price {
+  color: #9c8004 !important;  
+}
+/* ===== DETALLE DE PRODUCTO EN MODO OSCURO ===== */
+
+/* Contenedor general */
+body.dark-mode .product-detail-container {
+  background: transparent;
+  color: #f5e9d9;
+}
+
+/* Tarjeta grande (la que se ve beige/blanca en la captura) */
+body.dark-mode .product-detail-grid {
+  background: radial-gradient(circle at 20% 0%, #262033 0%, #181222 55%, #120e1b 100%);
+  border: 1px solid #3b314b;
+  box-shadow: 0 18px 36px rgba(0,0,0,0.8);
+}
+
+/* Visor del anillo */
+body.dark-mode .product-detail-viewer {
+  background: radial-gradient(circle at 30% 15%, #221a35 0%, #181222 60%, #120e1b 100%);
+}
+
+/* Borde interior del visor */
+body.dark-mode .product-detail-viewer::before {
+  border-color: rgba(185,163,255,0.45);
+}
+
+/* Título y textos */
+body.dark-mode .product-detail-info h1 {
+  color: #fdf7e5;
+}
+
+body.dark-mode .product-detail-info p,
+body.dark-mode .product-description,
+body.dark-mode .product-features li {
+  color: #e9ddcc;
+}
+
+/* Etiqueta “Características” y subtítulos */
+body.dark-mode .product-description h3,
+body.dark-mode .product-features h3 {
+  color: #f5e9d9;
+}
+
+/* Precio destacado en dorado */
+body.dark-mode .product-price {
+  color: #000000;
+}
+/* Precio en detalle solo en modo oscuro */
+body.dark-mode .product-price {
+  color: #523f04 !important;  /* el color que quieras */
+}
+
+/* Forzar tamaño de títulos de categoría */
+.category-title {
+  font-size: 1.6rem !important;   /* ajusta el valor a lo que quieras */
+}
+body.dark-mode .category-title {
+  font-size: 2rem !important;
+}
 
